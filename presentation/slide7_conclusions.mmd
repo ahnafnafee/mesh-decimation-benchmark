@@ -1,0 +1,27 @@
+flowchart TD
+    %% Nodes
+    Start{"Need Real-Time Speed?"}
+    
+    subgraph Recommendations
+        Clustering["Use Vertex Clustering<br/>(Milliseconds)"]
+        QEM["Use QEM<br/>(Better Accuracy)"]
+        Either["Either Works<br/>(Clustering preferred for speed)"]
+    end
+    
+    Decision2{"Processing Organic/Scanned?"}
+
+    %% Edges
+    Start -->|Yes| Clustering
+    Start -->|No| Decision2
+    
+    Decision2 -->|Yes| QEM
+    Decision2 -->|No| Either
+
+    %% Styling
+    classDef question fill:#ffecb3,stroke:#000000,stroke-width:3px,color:#000000,font-size:24px,font-weight:bold;
+    classDef answer fill:#c8e6c9,stroke:#000000,stroke-width:3px,color:#000000,font-size:24px,font-weight:bold;
+    classDef neutral fill:#cfd8dc,stroke:#000000,stroke-width:3px,color:#000000,font-size:24px,font-weight:bold;
+
+    class Start,Decision2 question;
+    class Clustering,QEM answer;
+    class Either neutral;

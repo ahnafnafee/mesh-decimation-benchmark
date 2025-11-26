@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+
+# Project Specific
+# Ignore raw large archives
+raw_downloads/*.zip
+raw_downloads/*.tar
+raw_downloads/*.tar.gz
+raw_downloads/*.tgz
+
+# Ignore huge extracted datasets
+raw_downloads/ModelNet40-extracted/
+raw_downloads/Thingi10K-extracted/
+
+# Results (Optional: usually you might want to commit results, but if they are large artifacts...)
+# experiment_results.csv
