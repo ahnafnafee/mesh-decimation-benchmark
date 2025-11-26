@@ -1,0 +1,13 @@
+\section{Discussion}
+
+\subsection{Algorithmic Implications}
+Our results establish that algorithm selection must account for input topology. Clustering's $O(n)$ spatial hashing makes it the only viable option for real-time LOD generation (e.g., game engines requiring $<16$ms frame budgets). QEM's $O(n \log n)$ priority queue overhead restricts it to offline preprocessing.
+
+The "CAD Failure" phenomenon, where QEM catastrophically collapses at 90\% decimation on sparse meshes, reveals a fundamental limitation. CAD models are already vertex-efficient; aggressive reduction exhausts "safe" edges, forcing collapse of silhouette-critical geometry. Clustering's grid-based resampling, while producing blocky results, maintains volumetric bounds and avoids topological failures.
+
+\subsection{Limitations}
+While this study elucidates key differences between the algorithms, there are limitations to our approach. First, we relied solely on the Hausdorff Distance as a metric for geometric fidelity. While Hausdorff distance captures the maximum geometric error, it does not necessarily correlate perfectly with perceptual quality. A human observer might prefer a mesh that has slightly higher geometric deviation but preserves normal vectors and lighting behavior better. User studies could reveal different preferences, especially for organic character models.
+
+Second, our implementation used PyMeshLab's default parameter sets for QEM. While we believe this represents a common usage scenario, advanced tuning of QEM's boundary weights and normal preservation settings could potentially mitigate some of the "CAD failure" cases, albeit at the cost of even higher tuning complexity.
+
+Finally, the datasets, while distinct, are subsets of larger repositories. 15 models per category is sufficient for statistical power in this factorial design, but a larger meta-analysis across thousands of assets could reveal more subtle sub-cluster behaviors.

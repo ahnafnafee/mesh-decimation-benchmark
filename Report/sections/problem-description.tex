@@ -1,0 +1,50 @@
+\section{Problem Description}
+
+Mesh simplification algorithms face a fundamental challenge: reducing polygon count while maintaining visual fidelity. This study focuses on two algorithmic paradigms representing opposing design philosophies.
+
+\subsection{Algorithm Formalization}
+
+\textbf{Quadric Error Metrics (QEM)} \cite{garland1997surface} is an iterative local optimization algorithm that:
+\begin{itemize}
+    \item Associates a $4 \times 4$ symmetric matrix $\mathbf{Q}_v$ with each vertex $v$, representing the sum of squared distances to the planes of incident triangles.
+    \item Collapses edges based on a priority queue ordered by accumulated quadric error: $\Delta(\bar{v}) = \bar{v}^T (\mathbf{Q}_{v_1} + \mathbf{Q}_{v_2}) \bar{v}$.
+    \item Exhibits $O(n \log n)$ complexity due to priority queue maintenance.
+    \item Design goal: Minimize geometric deviation through local feature preservation.
+\end{itemize}
+
+\textbf{Vertex Clustering} \cite{rossignac1993multi} is a global spatial quantization algorithm that:
+\begin{itemize}
+    \item Overlays a uniform 3D grid on the input mesh bounding box.
+    \item Collapses all vertices within each grid cell $C_i$ to a single representative point $\bar{p}_i = \frac{1}{|C_i|} \sum_{v \in C_i} v$.
+    \item Achieves $O(n)$ complexity through spatial hashing.
+    \item Design goal: Maximize computational efficiency through global resampling.
+\end{itemize}
+
+\subsection{Research Hypotheses}
+
+We formally test the following hypotheses:
+\begin{enumerate}
+    \item \textbf{Performance Hypothesis ($H_{1,\text{speed}}$)}: Vertex Clustering provides superior time complexity across all mesh types ($p < 0.05$).
+    \item \textbf{Fidelity Hypothesis ($H_{1,\text{fidelity}}$)}: QEM's geometric accuracy advantage is conditional on mesh topology, performing optimally only on organic surfaces.
+    \item \textbf{Failure Mode Hypothesis ($H_{1,\text{failure}}$)}: QEM exhibits catastrophic geometric degradation on sparse CAD geometries at extreme decimation ratios (90\%).
+\end{enumerate}
+
+\subsection{Topology Distinction}
+
+Input mesh topologies are categorized into two distinct classes, motivated by their fundamentally different geometric properties:
+
+\textbf{Clean CAD Models} (from ModelNet40 \cite{wu20153d}): Mathematically-defined surfaces characterized by:
+\begin{itemize}
+    \item Sharp edges and planar regions with deliberate vertex placement.
+    \item Lower vertex density (typically 18k--80k vertices).
+    \item Manifold topology with regular triangulation patterns.
+\end{itemize}
+
+\textbf{Organic Scanned Models} (from Thingi10K \cite{zhou2016thingi10k}): Captured surfaces characterized by:
+\begin{itemize}
+    \item High-frequency noise and smooth curvatures.
+    \item Irregular triangulation from scanning artifacts.
+    \item Higher vertex density (typically 10k--600k vertices).
+\end{itemize}
+
+This distinction is critical because existing benchmarks often fail to disaggregate results by topology class, potentially masking algorithm-specific failure modes that only manifest under particular input conditions.

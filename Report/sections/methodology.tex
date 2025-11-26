@@ -1,0 +1,38 @@
+\section{Methodology}
+
+\subsection{Experimental Design}
+We utilized a $2 \times 2 \times 2$ factorial design to analyze the effects of the independent variables on the performance metrics. This design allows us to isolate the main effects of each factor as well as their interaction effects.
+\begin{itemize}
+    \item \textbf{Factor 1: Algorithm} (2 Levels): Quadric Edge Collapse Decimation (QEM) vs. Vertex Clustering.
+    \item \textbf{Factor 2: Mesh Type} (2 Levels): Clean CAD (from ModelNet40) vs. Organic Scanned (from Thingi10K).
+    \item \textbf{Factor 3: Decimation Level} (2 Levels): Moderate (50\% reduction in face count) vs. Extreme (90\% reduction in face count).
+\end{itemize}
+
+The dependent variables measured were:
+\begin{itemize}
+    \item \textbf{Execution Time}: Wall-clock time recorded in seconds. To account for system variability and just-in-time compilation lag, we included a warm-up run for each operation, followed by 5 measured repetitions. The reported value is the mean of these 5 repetitions.
+    \item \textbf{Geometric Fidelity}: We used the Two-Sided Hausdorff Distance \cite{cignoni1998metro} ($max(d(A,B), d(B,A))$). This metric measures the maximum deviation between the original mesh $A$ and the simplified mesh $B$. Specifically, for every point on mesh $A$, we find the distance to the closest point on mesh $B$, and vice versa. It is a rigorous measure of the worst-case geometric error.
+\end{itemize}
+
+\subsection{Datasets}
+We curated a balanced dataset of 30 models to mitigate selection bias:
+\begin{itemize}
+    \item \textbf{Clean CAD}: 15 models from the \textbf{ModelNet40} dataset \cite{wu20153d}. These models represent man-made objects such as airplanes, chairs, and guitars. They are characterized by sharp edges, large planar surfaces, low noise, and generally lower initial vertex counts (ranging from 18k to 80k vertices).
+    \item \textbf{Organic Scanned}: 15 models from the \textbf{Thingi10K} dataset \cite{zhou2016thingi10k}. These models are primarily 3D scans of sculptures, animals, and characters. They are characterized by smooth curvatures, high vertex counts (ranging from 10k to 600k), and ubiquitous surface noise typical of scanning processes.
+\end{itemize}
+
+\subsection{Implementation}
+To ensure reproducibility, the experimental pipeline was automated using Python and the \texttt{pymeshlab} library \cite{muntoni2020pymeshlab}, which provides bindings to MeshLab's C++ implementations of QEM and Clustering. For each model, we performed 5 independent repetitions to enable Multi-Way ANOVA estimation of error terms and interaction effects.
+
+We measured execution time using \texttt{time.perf\_counter\_ns()}, which provides the highest available resolution wall-clock time in nanoseconds. While \texttt{time.process\_time()} measures CPU time, wall-clock time is more representative of the end-user experience in real-time applications where blocking time matters. To mitigate the ``subtle points'' of timing measurements such as OS context switching and JIT compilation lag (as noted in standard texts), we performed a warm-up run before the measured repetitions and minimized background processes.
+
+\subsection{Experimental Environment}
+All experiments were conducted on a single workstation to ensure consistency. The machine was a custom-built desktop equipped with an Intel Core i9-14900K processor (24 Cores, 32 Threads, up to 6.0 GHz), 64 GB of DDR5-5600 RAM, and an NVIDIA GeForce RTX 3080 GPU, running Windows 11 Pro. Although the system contained a discrete GPU, the utilized algorithms are CPU-bound single-threaded operations.
+
+\subsection{Statistical Analysis Tools}
+
+All statistical analyses were conducted using Python's scientific computing ecosystem. We utilized \textbf{SciPy 1.11.3} for three-way ANOVA and Shapiro-Wilk normality tests, \textbf{Statsmodels 0.14.0} for post-hoc Tukey HSD tests, and \textbf{NumPy/Pandas} for data manipulation.
+
+\textbf{Statistical Parameters:} Significance level $\alpha = 0.05$; 95\% confidence intervals; minimum effect size threshold Cohen's $d = 0.5$ (medium effect); Tukey's HSD for multiple comparison correction.
+
+\textbf{Experimental Parameters:} Target face count reduction of 50\% (moderate) and 90\% (extreme); $n = 5$ repetitions per condition; 1 warm-up run (excluded); total of 120 observations across the factorial design.

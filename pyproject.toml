@@ -1,0 +1,15 @@
+[project]
+name = "mesh-simplification"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.10.7",
+    "pandas>=2.3.3",
+    "pymeshlab>=2025.7",
+    "pypdf>=6.4.0",
+    "scipy>=1.16.3",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.5",
+]

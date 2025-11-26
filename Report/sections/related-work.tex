@@ -1,0 +1,17 @@
+\section{Related Work}
+Mesh simplification has been a central topic in computer graphics for decades. The literature is generally categorized into local and global simplification strategies.
+
+\subsection{Vertex Clustering}
+Early global approaches include the Vertex Clustering algorithm by Rossignac and Borrel \cite{rossignac1993multi}. This method overlays a 3D grid on the model and collapses all vertices within a single cell into a representative point. While extremely fast ($O(n)$) and robust to topological defects, it lacks sensitivity to local surface curvature, often resulting in poor geometric fidelity at high decimation levels. It is, however, view-independent and capable of processing arbitrary polygonal geometry.
+
+\subsection{Iterative Decimation}
+Local iterative methods focus on removing specific mesh elements while preserving topology. Schroeder et al. \cite{schroeder1992decimation} introduced \textit{Vertex Decimation}, which iteratively removes vertices based on a distance-to-plane criterion and retriangulates the resulting holes. This approach produces better quality than clustering but is computationally more expensive and requires manifold input.
+
+\subsection{Quadric Error Metrics (QEM)}
+A significant breakthrough was the introduction of Quadric Error Metrics by Garland and Heckbert \cite{garland1997surface}. QEM associates a $4 \times 4$ symmetric matrix with each vertex, representing the sum of squared distances to the planes of incident triangles. Edge collapse costs are computed by summing these quadrics, allowing for a fast and accurate approximation of geometric error. QEM is widely considered the state-of-the-art for isotropic simplification, serving as the basis for \textit{Progressive Meshes} \cite{hoppe1996progressive}, which allow for continuous level-of-detail (LOD) representations.
+
+\subsection{View-Dependent Simplification}
+Building on these static methods, view-dependent algorithms like those proposed by Luebke and Erikson \cite{luebke1997view} dynamically adjust mesh complexity based on the observer's position, allocating more polygons to silhouette edges and nearby surfaces. This study primarily focuses on static simplification (Clustering vs. QEM) to establish a baseline for geometric accuracy and processing speed.
+
+\subsection{Benchmarking Gaps}
+While these algorithms are well-established, historical comparative evaluations have often skewed towards specific mesh types. Seminal works, such as those by Garland and Heckbert \cite{garland1997surface} and Hoppe \cite{hoppe1996progressive}, primarily validated their results on organic 3D scans like the \textit{Stanford Bunny} or \textit{Happy Buddha}. These ``idealized'' organic meshes possess uniform vertex density and smooth curvature, which flatter iterative error metrics. In contrast, sharp-feature CAD models, which are common in industrial applications, present distinct topological challenges (e.g., sharp creases, planar surfaces, potential non-manifold artifacts) that are frequently underrepresented in standard decimation benchmarks. This paper addresses this gap by explicitly contrasting performance across both Clean CAD and Organic Scanned topologies.

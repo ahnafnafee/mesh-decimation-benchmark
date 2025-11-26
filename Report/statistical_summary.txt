@@ -1,0 +1,2 @@
+Shapiro-Wilk Test for Time Residuals: W=0.5054, p=2.4874e-18
+Shapiro-Wilk Test for HD Residuals:   W=0.5298, p=6.6788e-18

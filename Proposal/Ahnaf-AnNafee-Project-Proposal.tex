@@ -1,0 +1,75 @@
+\documentclass[11pt, latterpaper]{article}
+
+% --- PREAMBLE BLOCK (Modified for pdflatex compatibility) ---
+\usepackage[margin=0.5in]{geometry} % Set 0.5-inch margins
+\usepackage{fontenc}        % Use T1 font encoding (pdflatex compatible)
+\usepackage[utf8]{inputenc}     % Allow UTF-8 input (pdflatex compatible)
+\usepackage{amsmath}            % For math environments and symbols
+\usepackage{hyperref}           % For clickable links
+\usepackage{titlesec}           % To customize section headings
+\titlespacing*{\section}{0pt}{1.5ex}{1ex}
+\titlespacing*{\subsection}{0pt}{1ex}{0.5ex}
+
+% --- CUSTOMIZE SECTION HEADINGS ---
+% This makes unnumbered \section* headings \normalsize and bold
+\titleformat{name=\section,numberless}{\normalsize\bfseries}{}{0em}{} 
+\titleformat{name=\subsection,numberless}{\normalsize\bfseries}{}{0em}{}
+
+% Remove page numbers for a proposal
+\pagestyle{empty}
+
+% Package for compact lists
+\usepackage{enumitem}
+\setlist{noitemsep, topsep=0.5ex, leftmargin=*}
+
+% Reduce spacing between paragraphs slightly
+\setlength{\parskip}{0.5\baselineskip}
+
+\begin{document}
+
+% --- TITLE SECTION ---
+\begin{center}
+    {\large \textbf{Performance Analysis of 3D Mesh Simplification Algorithms}} \\
+    {\small \text{Ahnaf An Nafee (G00154707)}}
+\end{center}
+\vspace{-0.5em}
+
+% --- PROBLEM STATEMENT ---
+\section*{1. Problem Statement}
+High-polygon 3D models create performance bottlenecks for real-time graphics applications. Mesh simplification algorithms are essential for reducing model complexity, but their performance is typically benchmarked on idealized data, which may not reflect real-world usage. This project addresses this gap by investigating the research question: \textit{Do the performance and geometric fidelity of common mesh simplification algorithms differ significantly when applied to clean, well-structured CAD models versus noisy, user-generated models?} The goal is to provide a rigorous, quantitative answer through formal experimental design and statistical analysis.
+
+% --- METHODOLOGY (CONSOLIDATED SECTION) ---
+\section*{2. Methodology}
+A two-factor, between-subjects experimental design will be employed. The methodology consists of the experimental setup, data collection procedure, and the statistical analysis plan.
+
+\subsection*{Experimental Design}
+\begin{itemize}
+    \item \textbf{Independent Variables (Factors)}:
+    \begin{itemize}
+        \item \textit{Factor 1: Simplification Algorithm} (2 Levels): Quadric Edge Collapse Decimation (QEM) and Clustering Decimation.
+        \item \textit{Factor 2: Mesh Type} (2 Levels): ``Clean CAD'' models from the \textbf{ModelNet40} dataset and ``Organic/Scanned'' models from the \textbf{Thingi10K} dataset.
+    \end{itemize}
+    \item \textbf{Dependent Variables (Metrics)}:
+    \begin{itemize}
+        \item \textit{Geometric Fidelity}: Quantified by the \textbf{Two-Sided Hausdorff Distance} ($max(d(A,B), d(B,A))$).
+        \item \textit{Computational Performance}: Measured by the \textbf{Wall-Clock Time} in seconds (averaged over 5 repetitions with warm-up).
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Procedure and Tools}
+A preliminary data pre-processing step will ensure all models are correctly formatted. The main experiment will then be automated using a Python script that utilizes \textbf{MeshLab}'s Python library (\texttt{pymeshlab}) to apply each algorithm to a curated set of 30 models (15 from each dataset) and record the dependent variables. This ensures a reproducible and error-free data collection process.
+
+\subsection*{Statistical Analysis Plan}
+The collected data will be analyzed using a formal hypothesis-testing framework with a significance level of $\alpha = 0.05$.
+\begin{itemize}
+    \item \textbf{Hypotheses}: Two separate \textbf{Two-Way ANOVAs} will test the null hypotheses for the main effects of algorithm and mesh type, and for their interaction effect. The interaction effect ($H_{0,int}$) is of primary interest, as rejecting it would provide evidence that the optimal algorithm choice depends on the model's quality.
+    \item \textbf{Analysis Pipeline}:
+    \begin{enumerate}
+        \item \textbf{Descriptive Statistics}: Calculate mean, standard deviation, standard error, and \textbf{95\% confidence intervals} for each of the 4 experimental groups.
+        \item \textbf{Assumption Checks}: Validate the use of ANOVA by testing for normality (\textbf{Shapiro-Wilk test}) and homogeneity of variances (\textbf{Levene's test}).
+        \item \textbf{ANOVA Execution}: Perform the Two-Way ANOVA using Python's \texttt{statsmodels} library to obtain F-statistics and $p$-values.
+        \item \textbf{Post-Hoc Analysis}: If significant interaction effects are found, independent T-tests (Welch's) will be conducted to analyze simple main effects.
+    \end{enumerate}
+\end{itemize}
+
+\end{document}

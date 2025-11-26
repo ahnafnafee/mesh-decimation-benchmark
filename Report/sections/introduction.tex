@@ -1,0 +1,18 @@
+\section{Introduction}
+
+In the domain of computer graphics, the trade-off between visual fidelity and rendering performance remains a fundamental challenge. As 3D scanning technologies (such as LiDAR and photogrammetry) and Computer-Aided Design (CAD) tools generate models with ever-increasing geometric complexity, often reaching millions of polygons, the computational cost of rendering these assets in real-time has skyrocketed. This bottleneck is arguably most critical in latency-sensitive applications such as Virtual Reality (VR), Augmented Reality (AR), and mobile gaming, where maintaining a high frame rate is essential for user comfort and immersion. Consequently, automated mesh simplification, the process of reducing the polygon count while preserving the object's visual appearance and shape, has become an indispensable component of the 3D content pipeline.
+
+Numerous algorithms have been proposed to address this problem over the last three decades. These methods are generally categorized into global approaches, such as Vertex Clustering, and iterative local approaches, such as Quadric Error Metrics (QEM). Vertex clustering simplifies meshes by grouping vertices based on spatial proximity, while QEM iteratively removes edges that introduce the least amount of geometric error. While these algorithms are well-established and widely implemented in industry-standard tools, comparative studies often benchmark them on idealized datasets. Many evaluations fail to distinguish between the structural characteristics of the input meshes, implicitly assuming that an algorithm's performance is consistent across different topologies.
+
+This assumption is problematic because structured CAD models differ fundamentally from organic, unstructured 3D scans. CAD models are typically defined by sharp edges, planar surfaces, and regular triangulation related to their mathematical construction. In contrast, organic models derived from scanning devices often contain high-frequency noise, irregular triangulation, and smooth curvatures. This project addresses this gap in the literature by investigating the following research question: \textit{How does the interplay of input mesh topology (Clean CAD vs. Organic Scanned), decimation severity, and algorithm choice (QEM vs. Clustering) impact geometric fidelity and execution efficiency?}
+
+To answer this, we employ a rigorous three-factor factorial experimental design (Algorithm $\times$ Topology $\times$ Decimation Ratio) to quantify these differences. We focus specifically on two critical metrics: execution time (representing computational efficiency) and geometric error (measured via the Two-Sided Hausdorff distance) under both moderate (50\%) and extreme (90\%) decimation scenarios.
+
+\textbf{Contributions.} Our primary contributions are:
+\begin{enumerate}
+    \item A systematic evaluation of QEM vs. Vertex Clustering across 30 distinct models, clearly separating behavior on Clean CAD vs. Organic Inputs.
+    \item Statistical verification (via ANOVA and Shapiro-Wilk analysis) demonstrating that QEM is statistically significantly slower ($p < 0.001$) and uniquely brittle on CAD topologies.
+    \item The identification of a critical "failure mode" for QEM on sparse CAD meshes, where geometric error spikes by orders of magnitude compared to the stable global quantization of Clustering.
+\end{enumerate}
+
+To guide this investigation, we formally test three specific hypotheses ($H_{1,\text{speed}}$, $H_{1,\text{fidelity}}$, and $H_{1,\text{failure}}$) defined in Section 3, postulating that Vertex Clustering offers superior time complexity, whereas QEM's accuracy is highly conditional on input topology.

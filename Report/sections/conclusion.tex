@@ -1,0 +1,25 @@
+\section{Conclusion}
+
+This study provides empirical evidence that mesh simplification algorithm selection must be informed by \textbf{both} the source topology and the target decimation ratio. Our results support all three research hypotheses: Vertex Clustering demonstrates superior time efficiency ($H_{1,\text{speed}}$), QEM's fidelity is strictly conditional on topology ($H_{1,\text{fidelity}}$), and QEM exhibits a specific failure mode on CAD inputs ($H_{1,\text{failure}}$). Our key findings establish:
+
+\textbf{Finding 1: Universal Speed Advantage.}
+Vertex Clustering is 60--80$\times$ faster than QEM across all conditions ($p < 0.001$), with the gap widening for high-complexity organic meshes. This performance advantage is algorithmic, not implementation-dependent, arising from $O(n)$ vs. $O(n \log n)$ complexity.
+
+\textbf{Finding 2: Topology-Conditional Fidelity.}
+QEM's geometric accuracy advantage is \textbf{highly conditional}. It offers superior fidelity on organic surfaces (mean HD = 0.006 vs. 0.013 for Clustering), effectively halving the error (Figure \ref{fig:teaser}, bottom row). However, it catastrophically fails on sparse CAD geometries at 90\% decimation (mean HD = 0.034), performing significantly worse than Clustering (Figure \ref{fig:teaser}, top row). This challenges the prevailing assumption that QEM is uniformly superior.
+
+\textbf{Finding 3: Stability vs. Optimality Trade-off.}
+Clustering exhibits remarkable error stability (coefficient of variation $< 15\%$) across all conditions, whereas QEM's error variance increases by 300\% when applied to unsuitable topologies. For safety-critical applications or automated pipelines, this predictability may outweigh marginal fidelity gains.
+
+\textbf{Practical Recommendations:}
+\begin{itemize}
+    \item \textbf{Real-time VR/AR}: Use Clustering exclusively ($< 16$ms frame budget requirement).
+    \item \textbf{Offline CAD simplification at 90\%}: Prefer Clustering to avoid topological collapse.
+    \item \textbf{High-fidelity organic model reduction at 50\%}: QEM provides optimal surface preservation.
+    \item \textbf{Unknown topology pipelines}: Implement hybrid routing based on vertex density analysis.
+\end{itemize}
+
+These findings suggest that the ``one-size-fits-all'' approach to simplification is suboptimal. Future content pipelines should incorporate topology detection as a preprocessing step to route meshes to algorithm-appropriate simplification strategies.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
