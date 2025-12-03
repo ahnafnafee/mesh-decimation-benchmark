@@ -67,9 +67,9 @@ This section details the mathematical foundations of the algorithms used in this
 **Purpose**: The main engine of the experiment. It iterates through datasets, applies algorithms, and records metrics.
 
 -   **Key Functions**:
-    -   `apply_algorithm(ms, algo_name, target_faces)`: Applies the specific decimation filter.
+    -   `apply_algorithm(ms, algo_name, target_faces, filepath)`: Applies the specific decimation filter.
         -   _QEM_: `meshing_decimation_quadric_edge_collapse` with `optimalplacement=True`.
-        -   _Clustering_: `meshing_decimation_clustering`.
+        -   _Clustering_: Implements a **binary search** (0.001% - 1.0%) to find the optimal threshold that matches the `target_faces` count, ensuring fair comparison.
     -   `run_experiment()`: Main loop. Handles warm-up runs, timing (5 repetitions), and Hausdorff distance calculation.
 -   **Metric Collection**:
     -   **Time**: Measured using `time.perf_counter_ns()` for high precision, averaged over 5 runs.

@@ -14,7 +14,7 @@ This project provides a comprehensive benchmark of 3D mesh simplification algori
 **Key Findings:**
 
 -   **Vertex Clustering**: ⚡ **100x Faster**. Best for real-time previews and massive point clouds.
--   **Quadric Error Metrics (QEM)**: 💎 **Superior Accuracy**. Essential for preserving features in organic shapes.
+-   **Quadric Error Metrics (QEM)**: 💎 **High Fidelity**. Preferred for feature preservation, though geometric error is comparable to Clustering at 50% reduction.
 
 ## 📊 Visual Results
 

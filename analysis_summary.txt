@@ -1,0 +1,64 @@
+
+--- Descriptive Statistics with 95% CI ---
+Summary Table:
+                                Time                  ... HausdorffDist                
+                                mean       std count  ...           std count       sem
+Algorithm  Type                                       ...                              
+Clustering clean_cad        0.023195  0.014998    15  ...      0.001708    15  0.000441
+           organic_scanned  0.154151  0.247297    15  ...      0.003854    15  0.000995
+QEM        clean_cad        0.621407  0.378259    15  ...      0.025098    15  0.006480
+           organic_scanned  3.078659  3.969706    15  ...      0.004704    15  0.001215
+
+[4 rows x 8 columns]
+Algorithm       Type                 Time Mean  Time 95% CI               HD Mean    HD 95% CI                
+--------------------------------------------------------------------------------------------------------------
+Clustering      clean_cad            0.0232     (0.0149, 0.0315)    0.0019     (0.0009, 0.0028)
+Clustering      organic_scanned      0.1542     (0.0172, 0.2911)    0.0058     (0.0037, 0.0079)
+QEM             clean_cad            0.6214     (0.4119, 0.8309)    0.0070     (-0.0069, 0.0209)
+QEM             organic_scanned      3.0787     (0.8803, 5.2770)    0.0036     (0.0010, 0.0062)
+--------------------------------------------------------------------------------------------------------------
+Shapiro-Wilk Test for Normality (p-value < 0.05 indicates non-normality):
+  QEM - clean_cad: Time p=0.0902, HD p=0.0000
+  QEM - organic_scanned: Time p=0.0004, HD p=0.0002
+  Clustering - clean_cad: Time p=0.0040, HD p=0.0008
+  Clustering - organic_scanned: Time p=0.0001, HD p=0.0003
+
+Levene's Test for Homogeneity of Variance (p-value < 0.05 indicates unequal variances):
+  Time: p=0.0005
+  Hausdorff Distance: p=0.6362
+
+
+--- Two-Way ANOVA Results ---
+Dependent Variable: Execution Time
+                          sum_sq    df          F    PR(>F)
+C(Algorithm)           46.535811   1.0  11.660901  0.001194
+C(Type)                25.120578   1.0   6.294692  0.015031
+C(Algorithm):C(Type)   20.293709   1.0   5.085179  0.028059
+Residual              223.482332  56.0        NaN       NaN
+
+
+Dependent Variable: Hausdorff Distance
+                            sum_sq    df         F    PR(>F)
+C(Algorithm)          3.150467e-05   1.0  0.188143  0.666133
+C(Type)               9.573285e-07   1.0  0.005717  0.939998
+C(Algorithm):C(Type)  2.051494e-04   1.0  1.225136  0.273087
+Residual              9.377214e-03  56.0       NaN       NaN
+
+
+--- Simple Main Effects (Interaction Analysis) ---
+Since the interaction is significant (or to explore specific scenarios), we test Algorithm differences within each Mesh Type.
+
+Mesh Type: clean_cad
+  QEM vs Clustering (Time): t=6.1203, p=0.0000, Mean Diff=0.5982s
+    -> SIGNIFICANT difference
+  QEM vs Clustering (HD):   t=0.7925, p=0.4412, Mean Diff=0.005147
+
+Mesh Type: organic_scanned
+  QEM vs Clustering (Time): t=2.8477, p=0.0128, Mean Diff=2.9245s
+    -> SIGNIFICANT difference
+  QEM vs Clustering (HD):   t=-1.4324, p=0.1635, Mean Diff=-0.002249
+
+=== Analysis Complete ===
+
+Interpretation Guide:
+- If Levene's test p < 0.05: Variances are unequal, T-test results may be affected.

@@ -17,7 +17,38 @@ TARGET_PERCENTAGE = 0.5
 def get_face_count(ms):
     return ms.current_mesh().face_number()
 
-def apply_algorithm(ms, algo_name, target_faces):
+def tune_clustering_threshold(filepath, target_faces):
+    min_t = 0.001
+    max_t = 1.0
+    best_t = 0.1
+    best_diff = float('inf')
+    
+    # Binary search (approximate)
+    for _ in range(10):
+        mid_t = (min_t + max_t) / 2
+        
+        # Test this threshold
+        ms_test = pymeshlab.MeshSet()
+        ms_test.load_new_mesh(filepath)
+        ms_test.meshing_decimation_clustering(threshold=pymeshlab.PercentageValue(mid_t))
+        
+        res_faces = ms_test.current_mesh().face_number()
+        diff = abs(res_faces - target_faces)
+        
+        if diff < best_diff:
+            best_diff = diff
+            best_t = mid_t
+        
+        if res_faces < target_faces:
+            # Too aggressive (too few faces) -> Reduce threshold (smaller cells)
+            max_t = mid_t
+        else:
+            # Too many faces -> Increase threshold (larger cells)
+            min_t = mid_t
+            
+    return best_t
+
+def apply_algorithm(ms, algo_name, target_faces, clustering_threshold=None):
     if algo_name == "QEM":
         ms.meshing_decimation_quadric_edge_collapse(
             targetfacenum=target_faces,
@@ -29,7 +60,9 @@ def apply_algorithm(ms, algo_name, target_faces):
         )
     elif algo_name == "Clustering":
         # Vertex Clustering
-        ms.meshing_decimation_clustering(threshold=pymeshlab.PercentageValue(1.0))
+        # Use provided threshold or default to 0.1% if not tuned (shouldn't happen in exp)
+        t = clustering_threshold if clustering_threshold is not None else 0.1
+        ms.meshing_decimation_clustering(threshold=pymeshlab.PercentageValue(t))
 
 def run_experiment():
     results = []
@@ -59,13 +92,18 @@ def run_experiment():
                 
                 for algo in algorithms:
                     try:
+                        # Tune parameters if needed
+                        clustering_threshold = None
+                        if algo == "Clustering":
+                            clustering_threshold = tune_clustering_threshold(filepath, target_faces)
+                        
                         # Warm-up run (if needed, to load libraries/caches)
                         # For simple scripts, this might be overkill, but good practice.
                         # We'll run once without timing.
                         print(f"  Running {algo}...", end='', flush=True)
                         ms = pymeshlab.MeshSet()
                         ms.load_new_mesh(filepath)
-                        apply_algorithm(ms, algo, target_faces)
+                        apply_algorithm(ms, algo, target_faces, clustering_threshold)
                         
                         # Measure Time (Average of N runs)
                         NUM_REPEATS = 5
@@ -77,7 +115,7 @@ def run_experiment():
                             ms_timing.load_new_mesh(filepath)
                             
                             start_time = time.perf_counter_ns()
-                            apply_algorithm(ms_timing, algo, target_faces)
+                            apply_algorithm(ms_timing, algo, target_faces, clustering_threshold)
                             end_time = time.perf_counter_ns()
                             total_time += (end_time - start_time)
                         
@@ -89,7 +127,7 @@ def run_experiment():
                         # Let's reload to be safe and consistent with the "FinalFaces" count.
                         ms = pymeshlab.MeshSet()
                         ms.load_new_mesh(filepath)
-                        apply_algorithm(ms, algo, target_faces)
+                        apply_algorithm(ms, algo, target_faces, clustering_threshold)
                         
                         final_faces = get_face_count(ms)
                         final_verts = ms.current_mesh().vertex_number()

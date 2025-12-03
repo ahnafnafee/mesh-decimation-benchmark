@@ -130,4 +130,16 @@ def analyze_results():
     print("- If Levene's test p < 0.05: Variances are unequal, T-test results may be affected.")
 
 if __name__ == "__main__":
-    analyze_results()
+    import sys
+    
+    # Redirect stdout to file
+    with open("analysis_summary.txt", "w", encoding="utf-8") as f:
+        original_stdout = sys.stdout
+        sys.stdout = f
+        
+        try:
+            analyze_results()
+        finally:
+            sys.stdout = original_stdout
+            
+    print("Analysis complete. Results saved to analysis_summary.txt")
