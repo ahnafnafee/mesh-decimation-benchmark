@@ -1,8 +1,8 @@
-PWD f:/OneDrive/OneDrive - George Mason University - O365 Production/Courses/1. Fall 25-26/CS700/Term Project/Proposal
+PWD c:/Users/nafee/Documents/GitHub/CS700-Project/Proposal
 INPUT c:/texlive/2025/texmf.cnf
 INPUT c:/texlive/2025/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT f:/OneDrive/OneDrive - George Mason University - O365 Production/Courses/1. Fall 25-26/CS700/Term Project/Proposal/Ahnaf-AnNafee-Project-Proposal.tex
+INPUT c:/Users/nafee/Documents/GitHub/CS700-Project/Proposal/Ahnaf-AnNafee-Project-Proposal.tex
 OUTPUT Ahnaf-AnNafee-Project-Proposal.log
 INPUT c:/texlive/2025/texmf-dist/tex/latex/base/article.cls
 INPUT c:/texlive/2025/texmf-dist/tex/latex/base/article.cls
