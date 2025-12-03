@@ -76,54 +76,42 @@ def analyze_results():
     print(f"  Time: p={p_levene_time:.4f}")
     print(f"  Hausdorff Distance: p={p_levene_hd:.4f}")
     print("\n")
-
-    # --- Two-Way ANOVA ---
-    print("--- Two-Way ANOVA Results ---")
+    # --- Three-Way ANOVA ---
+    print("--- Three-Way ANOVA Results ---")
     
     # Model for Time
     print("Dependent Variable: Execution Time")
-    model_time = ols('Time ~ C(Algorithm) + C(Type) + C(Algorithm):C(Type)', data=df).fit()
+    model_time = ols('Time ~ C(Algorithm) * C(Type) * C(Decimation)', data=df).fit()
     anova_time = sm.stats.anova_lm(model_time, typ=2)
     print(anova_time)
     print("\n")
 
     # Model for Hausdorff Distance
     print("Dependent Variable: Hausdorff Distance")
-    model_hd = ols('HausdorffDist ~ C(Algorithm) + C(Type) + C(Algorithm):C(Type)', data=df).fit()
+    model_hd = ols('HausdorffDist ~ C(Algorithm) * C(Type) * C(Decimation)', data=df).fit()
     anova_hd = sm.stats.anova_lm(model_hd, typ=2)
     print(anova_hd)
     print("\n")
     
-
     
-    # --- Simple Main Effects (Interaction Analysis) ---
-    print("--- Simple Main Effects (Interaction Analysis) ---")
-    print("Since the interaction is significant (or to explore specific scenarios), we test Algorithm differences within each Mesh Type.\n")
+    # --- Post-Hoc Analysis (Tukey's HSD) ---
+    print("--- Post-Hoc Analysis (Tukey's HSD) ---")
+    print("Performing pairwise comparisons to control for Type 1 error.\n")
     
-    for mtype in df['Type'].unique():
-        print(f"Mesh Type: {mtype}")
-        subset = df[df['Type'] == mtype]
-        # T-test for independent samples (assuming equal variance for simplicity, or Welch's)
-        # We have 2 algorithms: QEM and Clustering
-        group1 = subset[subset['Algorithm'] == 'QEM']['Time']
-        group2 = subset[subset['Algorithm'] == 'Clustering']['Time']
-        
-        t_stat, p_val = stats.ttest_ind(group1, group2, equal_var=False) # Welch's t-test
-        mean_diff = group1.mean() - group2.mean()
-        
-        print(f"  QEM vs Clustering (Time): t={t_stat:.4f}, p={p_val:.4f}, Mean Diff={mean_diff:.4f}s")
-        if p_val < 0.05:
-            print("    -> SIGNIFICANT difference")
-        else:
-            print("    -> No significant difference")
-            
-        # HD
-        group1_hd = subset[subset['Algorithm'] == 'QEM']['HausdorffDist']
-        group2_hd = subset[subset['Algorithm'] == 'Clustering']['HausdorffDist']
-        t_stat_hd, p_val_hd = stats.ttest_ind(group1_hd, group2_hd, equal_var=False)
-        mean_diff_hd = group1_hd.mean() - group2_hd.mean()
-        print(f"  QEM vs Clustering (HD):   t={t_stat_hd:.4f}, p={p_val_hd:.4f}, Mean Diff={mean_diff_hd:.6f}")
-        print("")
+    # Create a combined group column for interaction analysis
+    df['Group'] = df['Algorithm'] + "_" + df['Type'] + "_" + df['Decimation']
+    
+    from statsmodels.stats.multicomp import pairwise_tukeyhsd
+    
+    print("1. Tukey HSD for Execution Time:")
+    tukey_time = pairwise_tukeyhsd(endog=df['Time'], groups=df['Group'], alpha=0.05)
+    print(tukey_time)
+    print("\n")
+    
+    print("2. Tukey HSD for Hausdorff Distance:")
+    tukey_hd = pairwise_tukeyhsd(endog=df['HausdorffDist'], groups=df['Group'], alpha=0.05)
+    print(tukey_hd)
+    print("\n")
 
     print("=== Analysis Complete ===")
     print("\nInterpretation Guide:")

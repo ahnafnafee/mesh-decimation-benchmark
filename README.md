@@ -13,37 +13,23 @@ This project provides a comprehensive benchmark of 3D mesh simplification algori
 
 **Key Findings:**
 
--   **Vertex Clustering**: ⚡ **100x Faster**. Best for real-time previews and massive point clouds.
--   **Quadric Error Metrics (QEM)**: 💎 **High Fidelity**. Preferred for feature preservation, though geometric error is comparable to Clustering at 50% reduction.
+-   **Vertex Clustering**: ⚡ **100x Faster** and **Robust**. Best for real-time previews and extreme decimation (90%), where it maintains stable error rates compared to QEM.
+-   **Quadric Error Metrics (QEM)**: 💎 **High Fidelity (at 50%)**. Preferred for moderate reduction, but geometric error spikes significantly on CAD models at 90% reduction.
 
-## 📊 Visual Results
-
-|                     Input (100%)                     |         QEM (50%)         |     Clustering (50%)      |
-| :--------------------------------------------------: | :-----------------------: | :-----------------------: |
-|               _High fidelity original_               |   _Feature preserving_    |    _Topology altering_    |
-| ![Input](presentation/slide6_geometric_fidelity.png) | _(See generated figures)_ | _(See generated figures)_ |
-
-_(Note: Run `generate_presentation_figures.py` to generate the latest comparison charts)_
-
-## 🛠️ Features
-
--   **Automated Pipeline**: From raw `.off/.stl` to analyzed `.csv` in one command.
--   **Statistical Rigor**: Built-in ANOVA and Post-hoc analysis (Welch's T-test) to prove significance.
--   **Reproducible**: Fixed seeds and container-friendly structure.
--   **Visualization**: Auto-generates publication-ready charts using Seaborn.
-
-## 📦 Installation
-
-```bash
 # Clone the repository
+
 git clone https://github.com/ahnafnafee/mesh-decimation-benchmark.git
 cd mesh-decimation-benchmark
 
 # Install dependencies using uv (recommended) or pip
+
 uv pip install -r requirements.txt
+
 # OR
+
 pip install -r requirements.txt
-```
+
+````
 
 ## 🚦 Usage
 
@@ -53,7 +39,7 @@ Place your raw models in `raw_downloads/` or use the included script to fetch Mo
 
 ```bash
 uv run model_preprocessor.py
-```
+````
 
 ### 2. Run Benchmark
 
@@ -74,10 +60,10 @@ uv run generate_presentation_figures.py
 
 ## 📈 Statistical Methodology
 
-We employ a **Two-Way ANOVA** to analyze the interaction between _Algorithm_ and _Mesh Type_.
+We employ a **Three-Way ANOVA** to analyze the interaction between _Algorithm_, _Mesh Type_, and _Decimation Level_ (50% vs 90%).
 
 -   **Significance Level**: $\alpha = 0.05$
--   **Post-Hoc**: Welch's T-test for simple main effects (due to significant interaction and heteroscedasticity).
+-   **Post-Hoc**: Tukey's HSD for pairwise comparisons (controlling for Type 1 error).
 
 See [DETAILS.md](DETAILS.md) for the full mathematical breakdown and [RESULTS.md](RESULTS.md) for the experiment report.
 

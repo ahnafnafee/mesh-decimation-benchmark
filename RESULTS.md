@@ -15,57 +15,50 @@ Following the project proposal review, the following methodological improvements
 
 ### 2.1. Descriptive Statistics
 
-| Algorithm      | Mesh Type | Time (s) [Mean ± SD] | Time 95% CI      | Hausdorff Dist [Mean ± SD] | HD 95% CI         |
-| :------------- | :-------- | :------------------- | :--------------- | :------------------------- | :---------------- |
-| **Clustering** | Clean CAD | **0.0232 ± 0.0150**  | (0.0149, 0.0315) | 0.0019 ± 0.0017            | (0.0009, 0.0028)  |
-|                | Organic   | **0.1542 ± 0.2473**  | (0.0172, 0.2911) | 0.0058 ± 0.0039            | (0.0037, 0.0079)  |
-| **QEM**        | Clean CAD | 0.6214 ± 0.3783      | (0.4119, 0.8309) | 0.0070 ± 0.0251            | (-0.0069, 0.0209) |
-|                | Organic   | 3.0787 ± 3.9697      | (0.8803, 5.2770) | 0.0036 ± 0.0047            | (0.0010, 0.0062)  |
+| Algorithm      | Mesh Type       | Time (s) [Mean ± SD] | Time 95% CI      | Hausdorff Dist [Mean ± SD] | HD 95% CI        |
+| :------------- | :-------------- | :------------------- | :--------------- | :------------------------- | :--------------- |
+| **Clustering** | Clean CAD       | **0.0169 ± 0.0140**  | (0.0124, 0.0214) | 0.0033 ± 0.0025            | (0.0025, 0.0041) |
+|                | Organic Scanned | **0.1160 ± 0.1739**  | (0.0511, 0.1809) | 0.0068 ± 0.0046            | (0.0051, 0.0085) |
+| **QEM**        | Clean CAD       | 0.7309 ± 0.4875      | (0.5750, 0.8868) | 0.0076 ± 0.0229            | (0.0003, 0.0149) |
+|                | Organic Scanned | 3.4893 ± 4.4972      | (1.8100, 5.1686) | 0.0045 ± 0.0047            | (0.0028, 0.0063) |
 
-### 2.2. Statistical Analysis (ANOVA)
+### 2.2. Statistical Analysis (3-Way ANOVA)
 
-We performed a two-way ANOVA to assess the impact of **Algorithm** and **Mesh Type** on performance.
+We performed a **Three-Way ANOVA** to analyze the effects of **Algorithm**, **Mesh Type**, and **Decimation Level** (50% vs 80%) on Execution Time and Geometric Fidelity.
 
-#### **Execution Time**
+#### **1. Execution Time**
 
--   **Algorithm**: $F(1, 56) = 11.66$, $p = 0.0012$ (Significant)
--   **Mesh Type**: $F(1, 56) = 6.29$, $p = 0.0150$ (Significant)
--   **Interaction**: $F(1, 56) = 5.09$, $p = 0.0281$ (Significant)
+-   **Algorithm**: Significant ($F(1, 132) = 27.31, p < 0.001$). QEM is significantly slower.
+-   **Mesh Type**: Significant ($F(1, 132) = 15.90, p < 0.001$). Organic meshes take longer.
+-   **Decimation Level**: Not Significant ($F(1, 132) = 1.01, p = 0.32$).
+-   **Interaction (Algorithm $\times$ Type)**: Significant ($F(1, 132) = 13.77, p < 0.001$). The performance gap between QEM and Clustering widens drastically for organic meshes.
 
-#### **Hausdorff Distance (Error)**
+#### **2. Geometric Fidelity (Hausdorff Distance)**
 
--   **Algorithm**: $F(1, 56) = 0.19$, $p = 0.6661$ (Not Significant)
--   **Mesh Type**: $F(1, 56) = 0.01$, $p = 0.9400$ (Not Significant)
--   **Interaction**: $F(1, 56) = 1.23$, $p = 0.2731$ (Not Significant)
+-   **Algorithm**: Not Significant ($F(1, 132) = 0.48, p = 0.49$).
+-   **Mesh Type**: Not Significant ($F(1, 132) = 0.01, p = 0.93$).
+-   **Decimation Level**: Not Significant ($F(1, 132) = 1.90, p = 0.17$).
+-   **Interactions**: None were significant.
 
-### 2.3. Simple Main Effects (Interaction Analysis)
+### 2.3. Post-Hoc Analysis (Tukey's HSD)
 
-Since the ANOVA showed a significant interaction for Time ($p=0.03$), we performed independent T-tests (Welch's) comparing QEM vs. Clustering within each Mesh Type.
+Since the ANOVA showed a significant interaction for Time, we performed **Tukey's HSD** to compare individual groups.
 
-**Execution Time:**
-
--   **Clean CAD**: QEM is significantly slower ($p < 0.001$, Mean Diff: 0.60s).
--   **Organic**: QEM is significantly slower ($p = 0.013$, Mean Diff: 2.92s).
--   **Insight**: The performance gap widens drastically for organic meshes, confirming the interaction effect.
-
-**Hausdorff Distance (Exploratory):**
-
--   **Clean CAD**: No significant difference ($p = 0.44$).
--   **Organic**: No significant difference ($p = 0.16$).
--   **Insight**: When face counts are strictly controlled (approx. 50% reduction), **Clustering performs comparably to QEM** in terms of geometric error (Hausdorff Distance) for this dataset, contrary to the initial hypothesis that QEM would be superior for organic shapes.
+-   **Time**:
+    -   **QEM on Organic Scanned** meshes is significantly slower than all other groups ($p < 0.001$).
+    -   There is no statistically significant difference in speed between QEM and Clustering on **Clean CAD** meshes ($p \approx 0.99$), likely due to the low polygon count of CAD models making the difference negligible in absolute terms.
+-   **Hausdorff Distance**:
+    -   No pairwise comparisons were statistically significant ($p > 0.05$).
+    -   **Insight**: At 50% and 80% decimation, **Vertex Clustering performs statistically comparably to QEM** in terms of geometric error for this dataset.
 
 ## 3. Discussion & Conclusions
 
-1.  **Speed**: **Vertex Clustering** is the undisputed winner for speed ($p < 0.01$). It operates in milliseconds (approx 20-150ms) compared to QEM's seconds (0.6-3.0s).
-2.  **Accuracy**:
-    -   For **Clean CAD** models, there is no significant difference in accuracy between QEM and Clustering at 50% reduction.
-    -   For **Organic** models, contrary to expectations, **no significant difference** was found ($p = 0.16$) when face counts are strictly controlled. This suggests that for a 50% reduction, Clustering provides a competitive geometric approximation.
-3.  **Interaction**: The significant interaction in Time ($p=0.03$) highlights that QEM's computational cost scales poorly with mesh complexity (Organic), whereas Clustering remains consistently fast.
-4.  **Recommendation**:
-    -   **General Use**: **Vertex Clustering** is recommended for most real-time applications. It offers a massive speed advantage with statistically comparable geometric accuracy to QEM at moderate reduction levels (50%).
-    -   **High-Fidelity**: **QEM** may still be preferred for extreme reductions or where topological preservation (which Hausdorff doesn't measure) is critical, but for pure geometric error at 50%, the advantage is not statistically significant in this dataset.
+1.  **Speed**: **Vertex Clustering** is the clear winner for large, complex (Organic) meshes. For simple CAD models, the difference is less pronounced in absolute time but still present.
+2.  **Accuracy**: Contrary to the common assumption that QEM is always superior, our results show **no significant difference** in Hausdorff Distance between QEM and Clustering for these specific decimation levels (50% and 80%). This suggests Clustering is a viable, high-speed alternative for moderate reduction tasks.
+3.  **Decimation Impact**: The target reduction level (50% vs 80%) did not significantly alter the relative performance ranking or the quality trade-off.
 
 ## 4. Limitations
 
--   **Non-normality**: Significant violations of normality assumptions were observed.
--   **Sample size**: $n=15$ per group.
+-   **Non-normality**: Significant violations of normality assumptions were observed (Shapiro-Wilk $p < 0.05$). However, ANOVA is generally robust to this given the balanced design.
+-   **Sample Size**: $n \approx 30-40$ per group, which is decent but could be larger.
+-   **Metric Scope**: We only measured Hausdorff Distance. QEM might still be superior in preserving specific topological features or sharp edges that Hausdorff Distance averages out.

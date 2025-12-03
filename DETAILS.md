@@ -1,6 +1,6 @@
 # Mesh Decimation Algorithms Comparison
 
-This repository implements a comparative study of mesh decimation algorithms, specifically analyzing the trade-offs between **Quadric Error Metrics (QEM)**, **Vertex Clustering**, and a **Naive Edge Collapse** (QEM without optimal placement).
+This repository implements a comparative study of mesh decimation algorithms, specifically analyzing the trade-offs between **Quadric Error Metrics (QEM)** and **Vertex Clustering**.
 
 ## 1. Repository Overview
 
@@ -69,7 +69,7 @@ This section details the mathematical foundations of the algorithms used in this
 -   **Key Functions**:
     -   `apply_algorithm(ms, algo_name, target_faces, filepath)`: Applies the specific decimation filter.
         -   _QEM_: `meshing_decimation_quadric_edge_collapse` with `optimalplacement=True`.
-        -   _Clustering_: Implements a **binary search** (0.001% - 1.0%) to find the optimal threshold that matches the `target_faces` count, ensuring fair comparison.
+        -   _Clustering_: Implements a **binary search** (0.001% - 1.0%) to find the optimal threshold that matches the `target_faces` count (50% and 90% reduction), ensuring fair comparison.
     -   `run_experiment()`: Main loop. Handles warm-up runs, timing (5 repetitions), and Hausdorff distance calculation.
 -   **Metric Collection**:
     -   **Time**: Measured using `time.perf_counter_ns()` for high precision, averaged over 5 runs.
@@ -86,8 +86,8 @@ This section details the mathematical foundations of the algorithms used in this
     3.  **Assumptions Testing**:
         -   _Shapiro-Wilk_: Tests for normality of residuals.
         -   _Levene's Test_: Tests for homogeneity of variance.
-    4.  **ANOVA**: Two-Way ANOVA (`Time ~ Algorithm + Type`) to find main effects and interactions.
-    5.  **Post-Hoc**: Independent T-tests (Welch's) to analyze simple main effects when interactions are significant.
+    4.  **ANOVA**: Three-Way ANOVA (`Time ~ Algorithm * Type * Decimation`) to find main effects and interactions across all three factors.
+    5.  **Post-Hoc**: Tukey's HSD (Honestly Significant Difference) test for pairwise comparisons to control for Type 1 error rates.
 
 ### `generate_figures.py`
 
@@ -123,11 +123,11 @@ This section breaks down the statistical methods used, what they mean, and how t
 -   **p-value**: The probability of seeing these results if all groups were actually the same.
     -   _p < 0.05_: Statistically significant difference exists.
 
-### 3. Simple Main Effects (Independent T-Tests)
+### 3. Post-Hoc Analysis (Tukey's HSD)
 
--   **What it is**: A follow-up analysis used when the ANOVA shows a significant _interaction_ between factors (e.g., Algorithm and Mesh Type).
--   **Why use it?**: A significant interaction means the effect of one factor depends on the level of the other. We break down the analysis to compare algorithms _within_ each mesh type separately.
--   **Welch's T-Test**: We use Welch's t-test because it does not assume equal variances (homogeneity of variance), which is safer given our data.
+-   **What it is**: A single-step multiple comparison procedure and statistical test.
+-   **Why use it?**: When ANOVA finds a significant difference, Tukey's HSD tells us _which_ specific groups are different while controlling the Family-Wise Error Rate (FWER). It is more robust against Type 1 errors than running multiple independent T-tests.
+-   **Interpretation**: If the confidence interval of the difference between two means does not include zero, the difference is statistically significant.
 
 ### Statistical Decision Tree
 

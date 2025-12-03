@@ -1,62 +1,130 @@
 
 --- Descriptive Statistics with 95% CI ---
 Summary Table:
-                                Time                  ... HausdorffDist                
-                                mean       std count  ...           std count       sem
-Algorithm  Type                                       ...                              
-Clustering clean_cad        0.023195  0.014998    15  ...      0.001708    15  0.000441
-           organic_scanned  0.154151  0.247297    15  ...      0.003854    15  0.000995
-QEM        clean_cad        0.621407  0.378259    15  ...      0.025098    15  0.006480
-           organic_scanned  3.078659  3.969706    15  ...      0.004704    15  0.001215
-
-[4 rows x 8 columns]
+                                Time                           HausdorffDist                          
+                                mean       std count       sem          mean       std count       sem
+Algorithm  Type                                                                                       
+Clustering clean_cad        0.011275  0.006176    10  0.001953      0.007371  0.006841    10  0.002163
+           organic_scanned  0.060200  0.051704    10  0.016350      0.006861  0.001872    10  0.000592
+QEM        clean_cad        0.654763  0.168893    10  0.053409      0.025758  0.045928    10  0.014524
+           organic_scanned  2.789392  2.479783    10  0.784176      0.004558  0.003363    10  0.001063
 Algorithm       Type                 Time Mean  Time 95% CI               HD Mean    HD 95% CI                
 --------------------------------------------------------------------------------------------------------------
-Clustering      clean_cad            0.0232     (0.0149, 0.0315)    0.0019     (0.0009, 0.0028)
-Clustering      organic_scanned      0.1542     (0.0172, 0.2911)    0.0058     (0.0037, 0.0079)
-QEM             clean_cad            0.6214     (0.4119, 0.8309)    0.0070     (-0.0069, 0.0209)
-QEM             organic_scanned      3.0787     (0.8803, 5.2770)    0.0036     (0.0010, 0.0062)
+Clustering      clean_cad            0.0113     (0.0069, 0.0157)    0.0074     (0.0025, 0.0123)
+Clustering      organic_scanned      0.0602     (0.0232, 0.0972)    0.0069     (0.0055, 0.0082)
+QEM             clean_cad            0.6548     (0.5339, 0.7756)    0.0258     (-0.0071, 0.0586)
+QEM             organic_scanned      2.7894     (1.0155, 4.5633)    0.0046     (0.0022, 0.0070)
 --------------------------------------------------------------------------------------------------------------
 Shapiro-Wilk Test for Normality (p-value < 0.05 indicates non-normality):
-  QEM - clean_cad: Time p=0.0902, HD p=0.0000
-  QEM - organic_scanned: Time p=0.0004, HD p=0.0002
-  Clustering - clean_cad: Time p=0.0040, HD p=0.0008
-  Clustering - organic_scanned: Time p=0.0001, HD p=0.0003
+  QEM - clean_cad: Time p=0.8651, HD p=0.0002
+  QEM - organic_scanned: Time p=0.1111, HD p=0.5278
+  Clustering - clean_cad: Time p=0.3569, HD p=0.0859
+  Clustering - organic_scanned: Time p=0.1031, HD p=0.5944
 
 Levene's Test for Homogeneity of Variance (p-value < 0.05 indicates unequal variances):
-  Time: p=0.0005
-  Hausdorff Distance: p=0.6362
+  Time: p=0.0000
+  Hausdorff Distance: p=0.0791
 
 
---- Two-Way ANOVA Results ---
+--- Three-Way ANOVA Results ---
 Dependent Variable: Execution Time
-                          sum_sq    df          F    PR(>F)
-C(Algorithm)           46.535811   1.0  11.660901  0.001194
-C(Type)                25.120578   1.0   6.294692  0.015031
-C(Algorithm):C(Type)   20.293709   1.0   5.085179  0.028059
-Residual              223.482332  56.0        NaN       NaN
+                                       sum_sq    df          F    PR(>F)
+C(Algorithm)                        28.437414   1.0  18.983402  0.000127
+C(Type)                             11.919767   1.0   7.957043  0.008160
+C(Decimation)                        2.395241   1.0   1.598943  0.215186
+C(Algorithm):C(Type)                10.875401   1.0   7.259876  0.011137
+C(Algorithm):C(Decimation)           2.593727   1.0   1.731443  0.197576
+C(Type):C(Decimation)                1.312990   1.0   0.876487  0.356178
+C(Algorithm):C(Type):C(Decimation)   1.386613   1.0   0.925634  0.343214
+Residual                            47.936467  32.0        NaN       NaN
 
 
 Dependent Variable: Hausdorff Distance
-                            sum_sq    df         F    PR(>F)
-C(Algorithm)          3.150467e-05   1.0  0.188143  0.666133
-C(Type)               9.573285e-07   1.0  0.005717  0.939998
-C(Algorithm):C(Type)  2.051494e-04   1.0  1.225136  0.273087
-Residual              9.377214e-03  56.0       NaN       NaN
+                                      sum_sq    df         F    PR(>F)
+C(Algorithm)                        0.000647   1.0  1.621728  0.212024
+C(Type)                             0.001178   1.0  2.954361  0.095308
+C(Decimation)                       0.002885   1.0  7.234606  0.011265
+C(Algorithm):C(Type)                0.001070   1.0  2.683270  0.111205
+C(Algorithm):C(Decimation)          0.001047   1.0  2.625650  0.114964
+C(Type):C(Decimation)               0.001926   1.0  4.828646  0.035346
+C(Algorithm):C(Type):C(Decimation)  0.000918   1.0  2.301435  0.139072
+Residual                            0.012763  32.0       NaN       NaN
 
 
---- Simple Main Effects (Interaction Analysis) ---
-Since the interaction is significant (or to explore specific scenarios), we test Algorithm differences within each Mesh Type.
+--- Post-Hoc Analysis (Tukey's HSD) ---
+Performing pairwise comparisons to control for Type 1 error.
 
-Mesh Type: clean_cad
-  QEM vs Clustering (Time): t=6.1203, p=0.0000, Mean Diff=0.5982s
-    -> SIGNIFICANT difference
-  QEM vs Clustering (HD):   t=0.7925, p=0.4412, Mean Diff=0.005147
+1. Tukey HSD for Execution Time:
+                        Multiple Comparison of Means - Tukey HSD, FWER=0.05                        
+===================================================================================================
+            group1                         group2             meandiff p-adj   lower  upper  reject
+---------------------------------------------------------------------------------------------------
+      Clustering_clean_cad_50%       Clustering_clean_cad_90%  -0.0099    1.0 -2.5173 2.4976  False
+      Clustering_clean_cad_50% Clustering_organic_scanned_50%   0.0589    1.0 -2.4485 2.5664  False
+      Clustering_clean_cad_50% Clustering_organic_scanned_90%   0.0291    1.0 -2.4784 2.5365  False
+      Clustering_clean_cad_50%              QEM_clean_cad_50%   0.5066 0.9976 -2.0009 3.0141  False
+      Clustering_clean_cad_50%              QEM_clean_cad_90%   0.7705 0.9718 -1.7369  3.278  False
+      Clustering_clean_cad_50%        QEM_organic_scanned_50%   1.9065 0.2473  -0.601  4.414  False
+      Clustering_clean_cad_50%        QEM_organic_scanned_90%   3.6399 0.0011  1.1324 6.1474   True
+      Clustering_clean_cad_90% Clustering_organic_scanned_50%   0.0688    1.0 -2.4387 2.5763  False
+      Clustering_clean_cad_90% Clustering_organic_scanned_90%   0.0389    1.0 -2.4686 2.5464  False
+      Clustering_clean_cad_90%              QEM_clean_cad_50%   0.5164 0.9973 -1.9911 3.0239  False
+      Clustering_clean_cad_90%              QEM_clean_cad_90%   0.7804 0.9698 -1.7271 3.2879  False
+      Clustering_clean_cad_90%        QEM_organic_scanned_50%   1.9163 0.2419 -0.5912 4.4238  False
+      Clustering_clean_cad_90%        QEM_organic_scanned_90%   3.6498 0.0011  1.1423 6.1572   True
+Clustering_organic_scanned_50% Clustering_organic_scanned_90%  -0.0299    1.0 -2.5374 2.4776  False
+Clustering_organic_scanned_50%              QEM_clean_cad_50%   0.4476 0.9989 -2.0599 2.9551  False
+Clustering_organic_scanned_50%              QEM_clean_cad_90%   0.7116 0.9819 -1.7959 3.2191  False
+Clustering_organic_scanned_50%        QEM_organic_scanned_50%   1.8475 0.2817   -0.66  4.355  False
+Clustering_organic_scanned_50%        QEM_organic_scanned_90%    3.581 0.0014  1.0735 6.0884   True
+Clustering_organic_scanned_90%              QEM_clean_cad_50%   0.4775 0.9984   -2.03  2.985  False
+Clustering_organic_scanned_90%              QEM_clean_cad_90%   0.7415 0.9772  -1.766  3.249  False
+Clustering_organic_scanned_90%        QEM_organic_scanned_50%   1.8774 0.2639 -0.6301 4.3849  False
+Clustering_organic_scanned_90%        QEM_organic_scanned_90%   3.6109 0.0012  1.1034 6.1183   True
+             QEM_clean_cad_50%              QEM_clean_cad_90%    0.264    1.0 -2.2435 2.7715  False
+             QEM_clean_cad_50%        QEM_organic_scanned_50%   1.3999 0.6192 -1.1076 3.9074  False
+             QEM_clean_cad_50%        QEM_organic_scanned_90%   3.1333 0.0066  0.6258 5.6408   True
+             QEM_clean_cad_90%        QEM_organic_scanned_50%   1.1359 0.8184 -1.3716 3.6434  False
+             QEM_clean_cad_90%        QEM_organic_scanned_90%   2.8694  0.016  0.3619 5.3768   True
+       QEM_organic_scanned_50%        QEM_organic_scanned_90%   1.7334 0.3566 -0.7741 4.2409  False
+---------------------------------------------------------------------------------------------------
 
-Mesh Type: organic_scanned
-  QEM vs Clustering (Time): t=2.8477, p=0.0128, Mean Diff=2.9245s
-    -> SIGNIFICANT difference
-  QEM vs Clustering (HD):   t=-1.4324, p=0.1635, Mean Diff=-0.002249
+
+2. Tukey HSD for Hausdorff Distance:
+                        Multiple Comparison of Means - Tukey HSD, FWER=0.05                         
+====================================================================================================
+            group1                         group2             meandiff p-adj   lower   upper  reject
+----------------------------------------------------------------------------------------------------
+      Clustering_clean_cad_50%       Clustering_clean_cad_90%    0.011 0.9863 -0.0299   0.052  False
+      Clustering_clean_cad_50% Clustering_organic_scanned_50%   0.0038    1.0 -0.0371  0.0447  False
+      Clustering_clean_cad_50% Clustering_organic_scanned_90%   0.0062 0.9996 -0.0347  0.0472  False
+      Clustering_clean_cad_50%              QEM_clean_cad_50%  -0.0014    1.0 -0.0423  0.0395  False
+      Clustering_clean_cad_50%              QEM_clean_cad_90%   0.0493 0.0097  0.0083  0.0902   True
+      Clustering_clean_cad_50%        QEM_organic_scanned_50%   0.0008    1.0 -0.0401  0.0417  False
+      Clustering_clean_cad_50%        QEM_organic_scanned_90%   0.0046    1.0 -0.0363  0.0455  False
+      Clustering_clean_cad_90% Clustering_organic_scanned_50%  -0.0073  0.999 -0.0482  0.0337  False
+      Clustering_clean_cad_90% Clustering_organic_scanned_90%  -0.0048 0.9999 -0.0457  0.0361  False
+      Clustering_clean_cad_90%              QEM_clean_cad_50%  -0.0125  0.973 -0.0534  0.0284  False
+      Clustering_clean_cad_90%              QEM_clean_cad_90%   0.0382 0.0812 -0.0027  0.0791  False
+      Clustering_clean_cad_90%        QEM_organic_scanned_50%  -0.0102 0.9914 -0.0511  0.0307  False
+      Clustering_clean_cad_90%        QEM_organic_scanned_90%  -0.0065 0.9995 -0.0474  0.0345  False
+Clustering_organic_scanned_50% Clustering_organic_scanned_90%   0.0025    1.0 -0.0385  0.0434  False
+Clustering_organic_scanned_50%              QEM_clean_cad_50%  -0.0052 0.9999 -0.0461  0.0357  False
+Clustering_organic_scanned_50%              QEM_clean_cad_90%   0.0455 0.0209  0.0045  0.0864   True
+Clustering_organic_scanned_50%        QEM_organic_scanned_50%   -0.003    1.0 -0.0439   0.038  False
+Clustering_organic_scanned_50%        QEM_organic_scanned_90%   0.0008    1.0 -0.0401  0.0417  False
+Clustering_organic_scanned_90%              QEM_clean_cad_50%  -0.0077 0.9985 -0.0486  0.0332  False
+Clustering_organic_scanned_90%              QEM_clean_cad_90%    0.043 0.0338  0.0021  0.0839   True
+Clustering_organic_scanned_90%        QEM_organic_scanned_50%  -0.0054 0.9998 -0.0463  0.0355  False
+Clustering_organic_scanned_90%        QEM_organic_scanned_90%  -0.0016    1.0 -0.0426  0.0393  False
+             QEM_clean_cad_50%              QEM_clean_cad_90%   0.0507 0.0072  0.0098  0.0916   True
+             QEM_clean_cad_50%        QEM_organic_scanned_50%   0.0023    1.0 -0.0387  0.0432  False
+             QEM_clean_cad_50%        QEM_organic_scanned_90%    0.006 0.9997 -0.0349  0.0469  False
+             QEM_clean_cad_90%        QEM_organic_scanned_50%  -0.0484 0.0115 -0.0893 -0.0075   True
+             QEM_clean_cad_90%        QEM_organic_scanned_90%  -0.0447 0.0246 -0.0856 -0.0037   True
+       QEM_organic_scanned_50%        QEM_organic_scanned_90%   0.0038    1.0 -0.0372  0.0447  False
+----------------------------------------------------------------------------------------------------
+
 
 === Analysis Complete ===
 
