@@ -3,8 +3,6 @@ import os
 import glob
 import time
 import csv
-import pandas as pd
-import math
 
 # Setup paths
 DATASET_DIRS = {
