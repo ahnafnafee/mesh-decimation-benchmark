@@ -87,7 +87,7 @@ This section details the mathematical foundations of the algorithms used in this
         -   _Shapiro-Wilk_: Tests for normality of residuals.
         -   _Levene's Test_: Tests for homogeneity of variance.
     4.  **ANOVA**: Two-Way ANOVA (`Time ~ Algorithm + Type`) to find main effects and interactions.
-    5.  **Post-Hoc**: Tukey's HSD to find _which_ specific pairs differ significantly.
+    5.  **Post-Hoc**: Independent T-tests (Welch's) to analyze simple main effects when interactions are significant.
 
 ### `generate_figures.py`
 
@@ -123,10 +123,11 @@ This section breaks down the statistical methods used, what they mean, and how t
 -   **p-value**: The probability of seeing these results if all groups were actually the same.
     -   _p < 0.05_: Statistically significant difference exists.
 
-#### 3. Tukey's HSD (Honest Significant Difference)
+### 3. Simple Main Effects (Independent T-Tests)
 
--   **What it is**: A "Post-Hoc" (after the fact) test run _only_ if ANOVA is significant.
--   **Why use it?**: If ANOVA says "something is different", Tukey tells you _which specific pair_ (e.g., QEM vs. Clustering) is different. It corrects for the "Multiple Comparisons Problem" (risk of false positives increases when you do many t-tests).
+-   **What it is**: A follow-up analysis used when the ANOVA shows a significant _interaction_ between factors (e.g., Algorithm and Mesh Type).
+-   **Why use it?**: A significant interaction means the effect of one factor depends on the level of the other. We break down the analysis to compare algorithms _within_ each mesh type separately.
+-   **Welch's T-Test**: We use Welch's t-test because it does not assume equal variances (homogeneity of variance), which is safer given our data.
 
 ### Statistical Decision Tree
 
@@ -139,10 +140,10 @@ graph TD
     D --> F{Passed?}
     E -- Yes --> G[Parametric ANOVA]
     E -- No --> H["Consider Transformations or Non-Parametric (Kruskal-Wallis)"]
-    G --> I{p < 0.05?}
-    I -- Yes --> J["Post-Hoc (Tukey HSD)"]
-    I -- No --> K["Stop (No significant differences)"]
-    J --> L[Identify Specific Differences]
+    G --> I{Interaction Significant?}
+    I -- Yes --> J["Simple Main Effects (Welch's T-Test)"]
+    I -- No --> K["Main Effects Analysis"]
+    J --> L[Identify Specific Differences within Groups]
 ```
 
 ---
@@ -183,17 +184,17 @@ To verify the ANOVA F-statistic manually in Excel:
 7.  **p-value**:
     -   `=F.DIST.RT(F_stat, df_between, df_within)`
 
-### C. T-Test (Proxy for Tukey)
+### C. Independent T-Test (Welch's)
 
-While Excel doesn't have a built-in Tukey HSD function, you can approximate pairwise comparisons using a T-Test (though it lacks the multiple comparison correction).
+Since we are using Welch's T-test for simple main effects (due to the significant interaction), you can replicate this in Excel.
 
--   **Formula**: `=T.TEST(Range1, Range2, 2, 2)`
+-   **Formula**: `=T.TEST(Range1, Range2, 2, 3)`
     -   `tails=2` (Two-tailed)
-    -   `type=2` (Two-sample equal variance, homoscedastic)
+    -   `type=3` (Two-sample unequal variance / Heteroscedastic) - _This corresponds to Welch's t-test._
 
 ## 5. References & Resources
 
 -   **ANOVA Explained**: [Khan Academy - ANOVA](https://www.khanacademy.org/math/statistics-probability/analysis-of-variance-anova-library)
--   **Tukey's HSD**: [Statistics How To - Tukey's Test](https://www.statisticshowto.com/tukey-test-honest-significant-difference/)
+-   **Welch's T-test**: [Wikipedia - Welch's t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test)
 -   **Hausdorff Distance**: [Wikipedia - Hausdorff Distance](https://en.wikipedia.org/wiki/Hausdorff_distance)
 -   **Python Statsmodels**: [Statsmodels Documentation](https://www.statsmodels.org/stable/index.html)

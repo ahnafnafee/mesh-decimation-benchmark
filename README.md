@@ -45,29 +45,6 @@ This project compares three mesh simplification algorithms:
     ```
     This generates statistical analysis (ANOVA) and descriptive statistics.
 
-## Generating Figures
-
-To visualize the results and compare the wireframes/meshes:
-
-```bash
-uv run generate_figures.py
-```
-
-This will create composite comparison images in the `figures/` directory, showing the Original mesh alongside the output of QEM, Clustering, and Simple algorithms, with vertex counts.
-
-### Custom Rotation
-
-If you want to manually adjust the rotation angle for a specific model:
-
-```bash
-uv run custom_figure.py airplane_0004 --rot_x -30 --rot_y 45 --rot_z 0
-```
-
--   `model`: Name of the model (e.g., `airplane_0004`).
--   `--rot_x`, `--rot_y`, `--rot_z`: Rotation angles in degrees.
-
-This generates `figures/airplane_0004_custom.png`.
-
 ## Results
 
 See `RESULTS.md` for the detailed report and findings.
