@@ -31,12 +31,12 @@ This section details the mathematical foundations of the algorithms used in this
 
 1.  **Plane Representation**: Each face incident to a vertex $v$ defines a plane $p = [a, b, c, d]^T$ such that $ax + by + cz + d = 0$, or $p^T v = 0$.
 2.  **Quadric Matrix**: The squared distance from a vertex $v$ to a plane $p$ is given by $D^2(v) = (p^T v)^2 = v^T (p p^T) v$. The error at a vertex is the sum of squared distances to all incident planes:
-    $$ \Delta(v) = \sum\_{p \in \text{planes}(v)} (p^T v)^2 = v^T \left( \sum\_{p} p p^T \right) v = v^T Q v $$
+    $$ \Delta(v) = \sum*{p \in \text{planes}(v)} (p^T v)^2 = v^T \left( \sum*{p} p p^T \right) v = v^T Q v $$
     where $Q$ is a symmetric $4 \times 4$ matrix.
 3.  **Edge Collapse Cost**: For an edge $(v_1, v_2)$, the new vertex $\bar{v}$ inherits the quadrics of both endpoints: $\bar{Q} = Q_1 + Q_2$. The cost of the collapse is the error at the new position:
     $$ \text{Cost}(\bar{v}) = \bar{v}^T \bar{Q} \bar{v} $$
 4.  **Optimal Placement**: To minimize this cost, we solve for $\bar{v}$ where the gradient is zero ($\nabla \Delta(\bar{v}) = 0$). This results in a linear system:
-    $$ \begin{bmatrix} q\_{11} & q\_{12} & q\_{13} & q\_{14} \\ q\_{12} & q\_{22} & q\_{23} & q\_{24} \\ q\_{13} & q\_{23} & q\_{33} & q\_{34} \\ 0 & 0 & 0 & 1 \end{bmatrix} \bar{v} = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix} $$
+    $$ \begin{bmatrix} q*{11} & q*{12} & q*{13} & q*{14} \\ q*{12} & q*{22} & q*{23} & q*{24} \\ q*{13} & q*{23} & q*{33} & q*{34} \\ 0 & 0 & 0 & 1 \end{bmatrix} \bar{v} = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix} $$
     If the matrix is invertible, we find the optimal position. If not, we select the midpoint or one of the endpoints.
 
 ### 2.2. Vertex Clustering
@@ -47,7 +47,7 @@ This section details the mathematical foundations of the algorithms used in this
 
 1.  **Grid Discretization**: A bounding box is computed for the mesh and divided into a uniform 3D grid of cells with size $\epsilon$.
 2.  **Vertex Mapping**: Each vertex $v = (x, y, z)$ is mapped to a cell index $(i, j, k)$:
-    $$ i = \lfloor (x - x\_{min}) / \epsilon \rfloor, \quad j = \lfloor (y - y\_{min}) / \epsilon \rfloor, \quad k = \lfloor (z - z\_{min}) / \epsilon \rfloor $$
+    $$ i = \lfloor (x - x*{min}) / \epsilon \rfloor, \quad j = \lfloor (y - y*{min}) / \epsilon \rfloor, \quad k = \lfloor (z - z\_{min}) / \epsilon \rfloor $$
 3.  **Representative Vertex**: All vertices within a single cell are collapsed into a single representative vertex $\bar{v}$. This can be:
     -   **Centroid**: Average of all vertex positions in the cell.
     -   **Median**: The vertex closest to the center.
