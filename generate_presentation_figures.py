@@ -38,21 +38,14 @@ def create_geometric_fidelity_chart(df):
     """Slide 6: Geometric Fidelity"""
     fig, ax = plt.subplots(figsize=(10, 6))
     
+    # Plot with explicit order to ensure annotation alignment
     sns.barplot(data=df, x="Type", y="HausdorffDist", hue="Algorithm", 
+                hue_order=["QEM", "Clustering"], order=["clean_cad", "organic_scanned"],
                 errorbar=('ci', 95), capsize=0.1, palette=["#9b59b6", "#e67e22"], ax=ax)
     
     ax.set_ylabel("Hausdorff Distance (Lower is Better)", fontsize=14)
     ax.set_xlabel("Mesh Type", fontsize=14)
     ax.set_title("Geometric Fidelity: Clustering vs QEM", fontsize=16, pad=20)
-    
-    # Annotation for Organic Significance
-    # Find positions - this is tricky with seaborn barplots, hardcoding approx positions
-    # Organic is at x=1 (0-indexed), QEM is first bar, Clustering second?
-    # Let's check order: hue_order defaults to sort. QEM, Clustering -> C comes before Q?
-    # Let's force order
-    sns.barplot(data=df, x="Type", y="HausdorffDist", hue="Algorithm", 
-                hue_order=["QEM", "Clustering"], order=["clean_cad", "organic_scanned"],
-                errorbar=('ci', 95), capsize=0.1, palette=["#9b59b6", "#e67e22"], ax=ax)
 
     # Organic is index 1. QEM is bar 0 (left). Clustering is bar 1 (right).
     # We want to annotate the difference.
@@ -63,7 +56,7 @@ def create_geometric_fidelity_chart(df):
     x1, x2 = 0.8, 1.2 # Approx positions for bars at x=1
     y, h = y_max + 0.002, 0.001
     ax.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c='k')
-    ax.text((x1+x2)*.5, y+h, "p=0.004*", ha='center', va='bottom', color='k', fontsize=12, fontweight='bold')
+    ax.text((x1+x2)*.5, y+h, "p=0.16 (ns)", ha='center', va='bottom', color='k', fontsize=12, fontweight='bold')
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, "slide6_geometric_fidelity.png"), dpi=300)
