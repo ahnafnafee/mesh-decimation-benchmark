@@ -32,22 +32,6 @@ def apply_algorithm(ms, algo_name, target_faces):
     elif algo_name == "Clustering":
         # Vertex Clustering
         ms.meshing_decimation_clustering(threshold=pymeshlab.PercentageValue(1.0))
-    elif algo_name == "Simple":
-        # Isotropic Explicit Remeshing
-        # Calculate target edge length based on target face count and surface area
-        # Formula: Area ~ N * (sqrt(3)/4) * L^2  =>  L = sqrt( (4 * Area) / (N * sqrt(3)) )
-        measures = ms.get_geometric_measures()
-        area = measures['surface_area']
-        target_len = math.sqrt((4 * area) / (target_faces * math.sqrt(3)))
-        
-        # Convert to Percentage of Diagonal (Required by pymeshlab)
-        bbox = ms.current_mesh().bounding_box()
-        diag = bbox.diagonal()
-        target_len_pct = (target_len / diag) * 100
-        
-        # Apply remeshing
-        # Reduced iterations to 1 for performance (approx 4s vs 7s)
-        ms.meshing_isotropic_explicit_remeshing(targetlen=pymeshlab.PercentageValue(target_len_pct), iterations=1)
 
 def run_experiment():
     results = []
