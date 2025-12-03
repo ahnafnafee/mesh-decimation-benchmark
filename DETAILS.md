@@ -171,10 +171,10 @@ To verify the ANOVA F-statistic manually in Excel:
 1.  **Calculate Group Means**: Calculate mean for each algorithm column.
 2.  **Calculate Grand Mean**: Average of all data points.
 3.  **SS_Between (Sum of Squares Between)**:
-    -   Formula: $\sum n\_i (\bar{x}\_i - \bar{x}\_{grand})^2$
+    -   Formula: $\sum n_i (\bar{x}_i - \bar{x}_{grand})^2$
     -   _Excel_: `=COUNT(A2:A16)*(AVERAGE(A2:A16)-GrandMean)^2 + ...` for each group.
 4.  **SS_Within (Sum of Squares Within)**:
-    -   Formula: $\sum (x\_{ij} - \bar{x}\_i)^2$
+    -   Formula: $\sum (x_{ij} - \bar{x}_i)^2$
     -   _Excel_: `=DEVSQ(A2:A16) + DEVSQ(B2:B16) + ...`
 5.  **MS (Mean Square)**:
     -   $MS_{between} = SS_{between} / (k - 1)$ (where k = number of groups)
