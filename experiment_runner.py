@@ -94,7 +94,7 @@ def run_experiment():
         writer.writeheader()
 
         for mesh_type, dir_path in DATASET_DIRS.items():
-            files = glob.glob(os.path.join(dir_path, "*.obj"))[:5] # Limit to 5 files for speed
+            files = glob.glob(os.path.join(dir_path, "*.obj"))
             print(f"--- Processing {mesh_type} ({len(files)} files) ---")
             
             for filepath in files:
