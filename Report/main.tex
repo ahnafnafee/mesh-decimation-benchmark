@@ -67,15 +67,15 @@ High-fidelity 3D models often exceed the rendering budgets of real-time applicat
 
 \keywords{Mesh Simplification, Level of Detail, Performance Analysis, Quadric Error Metrics, Vertex Clustering}
 
-\begin{teaserfigure}
-  \centering
-  \includegraphics[width=\textwidth]{figures/teaser.png}
-  \caption{Visual comparison of decimation stability at \textbf{90\% target reduction}. \textbf{Top Row (Clean CAD - Airplane, 33k Faces):} QEM (center) suffers from catastrophic topological collapse, destroying the wings and fuselage. Vertex Clustering (right) produces a coarse approximation but preserves global connectivity. \textbf{Bottom Row (Organic - Face, 10.5k Faces):} QEM excels at preserving smooth curvature, whereas Clustering introduces uniform geometric aliasing.}
-  \Description{ Comparison of QEM and Clustering algorithms on Airplane (CAD) and Face (Organic) models. QEM fails on the airplane, removing wings, while Clustering keeps the shape but is blocky. Both work well on the face, but QEM is smoother.}
-  \label{fig:teaser}
-\end{teaserfigure}
-
 \maketitle
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/teaser.png}
+  \caption{Visual comparison of decimation stability at \textbf{90\% target reduction}. \textbf{Top Row (Clean CAD - Airplane, 33k Faces):} QEM (center) suffers from catastrophic topological collapse, destroying the wings and fuselage. Vertex Clustering (right) produces a coarse approximation but preserves global connectivity. \textbf{Bottom Row (Organic - Face, 10.5k Faces):} QEM excels at preserving smooth curvature, whereas Clustering introduces uniform geometric aliasing.}
+  \Description{Comparison of QEM and Clustering algorithms on Airplane (CAD) and Face (Organic) models. QEM fails on the airplane, removing wings, while Clustering keeps the shape but is blocky. Both work well on the face, but QEM is smoother.}
+  \label{fig:teaser}
+\end{figure*}
 
 \input{sections/introduction}
 \input{sections/related-work}

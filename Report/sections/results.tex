@@ -1,25 +1,25 @@
 \section{Results}
 
 \subsection{Execution Time Analysis}
-The execution time results highlight a dramatic performance gap between the two algorithms. Figure \ref{fig:time_bar} illustrates the mean execution time for each group.
+The CPU-time results highlight a dramatic performance gap between the two algorithms. Figure \ref{fig:time_bar} illustrates the mean CPU time for each group.
 
 A three-way Analysis of Variance (ANOVA) revealed a statistically significant main effect for the \textbf{Algorithm} ($F(1, 112) \approx 22.89, p < 0.001$). As expected from the complexity analysis, Vertex Clustering was consistently faster than QEM across all experimental conditions.
 
-However, the analysis also revealed a significant \textbf{Algorithm $\times$ Mesh Type} interaction ($F(1, 112) \approx 10.09, p = 0.002$). This interaction is visualized in Figure \ref{fig:time_int}. While Vertex Clustering remained extremely fast (typically under 0.05 seconds) regardless of whether the input model was a simple CAD object or a complex scan, QEM's processing time was highly sensitive to the input complexity. For Organic models, which typically possess higher vertex counts and more complex topology, the mean execution time for QEM jumped to approximately 1.29 seconds, compared to 0.26 seconds for CAD models.
+However, the analysis also revealed a significant \textbf{Algorithm $\times$ Mesh Type} interaction ($F(1, 112) \approx 10.09, p = 0.002$). This interaction is visualized in Figure \ref{fig:time_int}. While Vertex Clustering remained extremely fast (typically under 0.05 seconds) regardless of whether the input model was a simple CAD object or a complex scan, QEM's processing time was highly sensitive to the input complexity. For Organic models, which typically possess higher vertex counts and more complex topology, the mean CPU time for QEM jumped to approximately 1.29 seconds, compared to 0.26 seconds for CAD models.
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.8\linewidth]{figures/time_bar_chart.pdf}
-    \caption{Mean Execution Time by Algorithm and Mesh Type. Error bars represent 95\% Confidence Intervals. (Double-column view for detail)}
-    \Description{Bar chart showing execution time. Clustering is near zero for all types. QEM is low for CAD but very high (over 1.25s) for Organic models.}
+    \includegraphics[width=0.95\linewidth]{figures/time_bar_chart.pdf}
+    \caption{Mean CPU Time by Algorithm and Mesh Type. Error bars represent 95\% Confidence Intervals. (Double-column view for detail)}
+    \Description{Bar chart showing CPU time. Clustering is near zero for all types. QEM is low for CAD but very high (over 1.25s) for Organic models.}
     \label{fig:time_bar}
 \end{figure*}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\linewidth]{figures/time_interaction.pdf}
-    \caption{Interaction Plot for Execution Time. QEM is significantly more sensitive to mesh complexity than Clustering.}
-    \Description{Interaction plot showing execution time vs mesh type. Clustering line is flat and low. QEM line slopes steeply upward from CAD to Organic.}
+    \includegraphics[width=0.95\linewidth]{figures/time_interaction.pdf}
+    \caption{Interaction Plot for CPU Time. QEM is significantly more sensitive to mesh complexity than Clustering.}
+    \Description{Interaction plot showing CPU time vs mesh type. Clustering line is flat and low. QEM line slopes steeply upward from CAD to Organic.}
     \label{fig:time_int}
 \end{figure}
 
@@ -29,7 +29,7 @@ The Hausdorff Distance analysis yielded the most surprising results. Lower value
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.8\linewidth]{figures/hd_bar_chart.pdf}
+    \includegraphics[width=0.95\linewidth]{figures/hd_bar_chart.pdf}
     \caption{Mean Hausdorff Distance (Error) by Algorithm and Mesh Type. Error bars represent 95\% Confidence Intervals. Lower is better. (Double-column view for detail)}
     \Description{Bar chart of Hausdorff Distance. QEM is very low for Organic, but higher for CAD. Clustering is moderate for both.}
     \label{fig:hd_bar}
@@ -41,13 +41,13 @@ As seen in Table \ref{tab:summary}, QEM performed exceptionally well on Organic 
 
 To understand this anomaly, we must look at the detailed breakdown by decimation level (Figure \ref{fig:hd_facet}). At the 50\% decimation level, QEM performs reasonably well. However, at \textbf{90\% decimation}, QEM on Clean CAD models exhibited a massive spike in error. Post-hoc Tukey HSD tests confirmed that the error for "QEM on CAD at 90\%" was significantly higher than all other groups ($p < 0.001$). In contrast, Vertex Clustering showed no significant degradation in error stability even at 90\% reduction. Its error remained consistently low, suggesting it is a "safer" fall-back for extreme reductions.
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
-    \includegraphics[width=\linewidth]{figures/hd_dec_clean_cad.pdf}
+    \includegraphics[width=0.95\linewidth]{figures/hd_dec_clean_cad.pdf}
     \caption{Hausdorff Distance on Clean CAD Models. Note the dramatic error spike for QEM at 90\% decimation.}
     \Description{Bar chart focusing on CAD models. QEM error spikes massively at 90 percent decimation, far exceeding Clustering.}
     \label{fig:hd_facet}
-\end{figure}
+\end{figure*}
 
 \begin{table}[h]
 \centering
@@ -70,7 +70,7 @@ QEM & Organic & $1.290 \pm 1.718$ & $0.006 \pm 0.007$ \\
 
 \begin{table}[h]
 \centering
-\caption{Three-Way ANOVA Results for Execution Time}
+\caption{Three-Way ANOVA Results for CPU Time}
 \label{tab:anova_time}
 \small
 \begin{tabular}{lrrrr}
@@ -111,13 +111,13 @@ Residuals & 0.0866 & 112 & & \\
 \end{table}
 
 \subsection{Statistical Verification}
-To validate the assumptions of our ANOVA model, we analyzed the residuals of the dependent variables. The Shapiro-Wilk test for normality revealed significant deviations from normality for both Execution Time residuals ($W=0.5327, p < 0.001$) and Hausdorff Distance residuals ($W=0.5298, p < 0.001$). This non-normality arises from the bimodal nature of the data (fast CAD vs. slow Organic processing) and extreme outliers corresponding to the ``QEM on Clean CAD at 90\%'' condition.
+To validate the assumptions of our ANOVA model, we analyzed the residuals of the dependent variables. The Shapiro-Wilk test for normality revealed significant deviations from normality for both CPU Time residuals ($W=0.5327, p < 0.001$) and Hausdorff Distance residuals ($W=0.5298, p < 0.001$). This non-normality arises from the bimodal nature of the data (fast CAD vs. slow Organic processing) and extreme outliers corresponding to the ``QEM on Clean CAD at 90\%'' condition.
 
 While ANOVA is generally robust to non-normality with balanced designs and sufficient sample size ($N=120$ in our case), these results suggest that p-values should be interpreted with some caution. However, given the extremely large F-statistics where differences are orders of magnitude (e.g., 0.1s vs 4.0s), the statistical significance is robust to these violations. Future studies might employ non-parametric tests like the Kruskal-Wallis H test to further validate these findings.
 
 \subsection{Practical Interpretation of Results}
 
-\textbf{Execution Time Patterns:}
+\textbf{CPU Time Patterns:}
 The Algorithm $\times$ Mesh Type interaction reveals a critical scalability issue. For a typical organic model with 300k vertices:
 \begin{itemize}
     \item Clustering completes in $\sim$0.03 seconds (suitable for real-time LOD generation at 60 FPS).
@@ -137,7 +137,7 @@ In contrast, Clustering's voxelization approach maintains a coarse volumetric ap
 
 Beyond statistical significance, we computed Cohen's $d$ to quantify practical significance:
 
-\textbf{Execution Time:}
+\textbf{CPU Time:}
 \begin{itemize}
     \item Algorithm effect: $d = 0.81$ (large effect).
     \item Mesh Type effect: $d = 0.54$ (medium effect).
