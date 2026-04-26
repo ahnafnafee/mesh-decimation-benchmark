@@ -1,0 +1,142 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{9}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Cignoni et~al\mbox{.}(1998)]%
+        {cignoni1998metro}
+\bibfield{author}{\bibinfo{person}{Paolo Cignoni}, \bibinfo{person}{Claudio
+  Rocchini}, {and} \bibinfo{person}{Roberto Scopigno}.}
+  \bibinfo{year}{1998}\natexlab{}.
+\newblock \showarticletitle{Metro: measuring error on simplified surfaces}.
+\newblock \bibinfo{journal}{\emph{Computer graphics forum}}
+  \bibinfo{volume}{17}, \bibinfo{number}{2} (\bibinfo{year}{1998}),
+  \bibinfo{pages}{167--174}.
+\newblock
+
+
+\bibitem[Garland and Heckbert(1997)]%
+        {garland1997surface}
+\bibfield{author}{\bibinfo{person}{Michael Garland} {and}
+  \bibinfo{person}{Paul~S Heckbert}.} \bibinfo{year}{1997}\natexlab{}.
+\newblock \showarticletitle{Surface simplification using quadric error
+  metrics}. In \bibinfo{booktitle}{\emph{Proceedings of the 24th annual
+  conference on Computer graphics and interactive techniques}}.
+  \bibinfo{publisher}{ACM Press/Addison-Wesley Publishing Co.},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{209--216}.
+\newblock
+
+
+\bibitem[Hoppe(1996)]%
+        {hoppe1996progressive}
+\bibfield{author}{\bibinfo{person}{Hugues Hoppe}.}
+  \bibinfo{year}{1996}\natexlab{}.
+\newblock \showarticletitle{Progressive meshes}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 23rd annual conference on
+  Computer graphics and interactive techniques}}. \bibinfo{publisher}{ACM},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{99--108}.
+\newblock
+
+
+\bibitem[Luebke and Erikson(1997)]%
+        {luebke1997view}
+\bibfield{author}{\bibinfo{person}{David Luebke} {and} \bibinfo{person}{Carl
+  Erikson}.} \bibinfo{year}{1997}\natexlab{}.
+\newblock \showarticletitle{View-dependent simplification of arbitrary
+  polygonal environments}. In \bibinfo{booktitle}{\emph{Proceedings of the 24th
+  annual conference on Computer graphics and interactive techniques}}.
+  \bibinfo{publisher}{ACM Press/Addison-Wesley Publishing Co.},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{199--208}.
+\newblock
+
+
+\bibitem[Muntoni and Cignoni(2020)]%
+        {muntoni2020pymeshlab}
+\bibfield{author}{\bibinfo{person}{Alessandro Muntoni} {and}
+  \bibinfo{person}{Paolo Cignoni}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \bibinfo{title}{PyMeshLab}.
+\newblock
+\href{https://doi.org/10.5281/zenodo.1234567}{doi:\nolinkurl{10.5281/zenodo.1234567}}
+
+
+\bibitem[Rossignac and Borrel(1993)]%
+        {rossignac1993multi}
+\bibfield{author}{\bibinfo{person}{Jarek Rossignac} {and} \bibinfo{person}{Paul
+  Borrel}.} \bibinfo{year}{1993}\natexlab{}.
+\newblock \showarticletitle{Multi-resolution 3D approximations for rendering
+  complex scenes}. In \bibinfo{booktitle}{\emph{Modeling in Computer
+  Graphics}}. \bibinfo{publisher}{Springer}, \bibinfo{address}{Berlin,
+  Heidelberg}, \bibinfo{pages}{455--465}.
+\newblock
+
+
+\bibitem[Schroeder et~al\mbox{.}(1992)]%
+        {schroeder1992decimation}
+\bibfield{author}{\bibinfo{person}{William~J Schroeder},
+  \bibinfo{person}{Jonathan~A Zarge}, {and} \bibinfo{person}{William~E
+  Lorensen}.} \bibinfo{year}{1992}\natexlab{}.
+\newblock \showarticletitle{Decimation of triangle meshes}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 19th annual conference on
+  Computer graphics and interactive techniques}}. \bibinfo{publisher}{ACM},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{65--70}.
+\newblock
+
+
+\bibitem[Wu et~al\mbox{.}(2015)]%
+        {wu20153d}
+\bibfield{author}{\bibinfo{person}{Zhirong Wu}, \bibinfo{person}{Shuran Song},
+  \bibinfo{person}{Aditya Khosla}, \bibinfo{person}{Fisher Yu},
+  \bibinfo{person}{Linguang Zhang}, {and} \bibinfo{person}{Xiaoou Tang}.}
+  \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{3d shapenets: A deep representation for volumetric
+  shapes}. In \bibinfo{booktitle}{\emph{Proceedings of the IEEE conference on
+  computer vision and pattern recognition}}. \bibinfo{publisher}{IEEE},
+  \bibinfo{address}{Piscataway, NJ, USA}, \bibinfo{pages}{1912--1920}.
+\newblock
+
+
+\bibitem[Zhou and Jacobson(2016)]%
+        {zhou2016thingi10k}
+\bibfield{author}{\bibinfo{person}{Qingnan Zhou} {and} \bibinfo{person}{Alec
+  Jacobson}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Thingi10k: A dataset of 10,000 3d-printing models}.
+\newblock \bibinfo{journal}{\emph{ACM Transactions on Graphics (TOG)}}
+  \bibinfo{volume}{35}, \bibinfo{number}{6} (\bibinfo{year}{2016}),
+  \bibinfo{pages}{139:1--139:10}.
+\newblock
+
+
+\end{thebibliography}

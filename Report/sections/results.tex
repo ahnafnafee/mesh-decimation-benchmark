@@ -9,19 +9,23 @@ However, the analysis also revealed a significant \textbf{Algorithm $\times$ Mes
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.95\linewidth]{figures/time_bar_chart.pdf}
-    \caption{Mean CPU Time by Algorithm and Mesh Type. Error bars represent 95\% Confidence Intervals. (Double-column view for detail)}
-    \Description{Bar chart showing CPU time. Clustering is near zero for all types. QEM is low for CAD but very high (over 1.25s) for Organic models.}
-    \label{fig:time_bar}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth,height=5.8cm,keepaspectratio]{figures/time_bar_chart.pdf}
+        \caption{Mean CPU Time by Algorithm and Mesh Type. Error bars are 95\% CIs.}
+        \label{fig:time_bar}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth,height=5.8cm,keepaspectratio]{figures/time_interaction.pdf}
+        \caption{Interaction Plot for CPU Time. QEM is significantly more sensitive to mesh complexity than Clustering.}
+        \label{fig:time_int}
+    \end{subfigure}
+    \caption{Execution Time analysis. Clustering is consistently near-zero, while QEM scales poorly on Organic meshes.}
+    \Description{Two charts side-by-side. Left: bar chart of CPU time, Clustering near zero, QEM low for CAD, very high for Organic. Right: interaction plot, Clustering line flat and low, QEM line slopes steeply from CAD to Organic.}
+    \label{fig:time}
 \end{figure*}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.95\linewidth]{figures/time_interaction.pdf}
-    \caption{Interaction Plot for CPU Time. QEM is significantly more sensitive to mesh complexity than Clustering.}
-    \Description{Interaction plot showing CPU time vs mesh type. Clustering line is flat and low. QEM line slopes steeply upward from CAD to Organic.}
-    \label{fig:time_int}
-\end{figure}
 
 \subsection{Geometric Fidelity Analysis}
 The Hausdorff Distance analysis yielded the most surprising results. Lower values indicate better geometric preservation.
@@ -29,10 +33,22 @@ The Hausdorff Distance analysis yielded the most surprising results. Lower value
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.95\linewidth]{figures/hd_bar_chart.pdf}
-    \caption{Mean Hausdorff Distance (Error) by Algorithm and Mesh Type. Error bars represent 95\% Confidence Intervals. Lower is better. (Double-column view for detail)}
-    \Description{Bar chart of Hausdorff Distance. QEM is very low for Organic, but higher for CAD. Clustering is moderate for both.}
-    \label{fig:hd_bar}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth,height=5.8cm,keepaspectratio]{figures/hd_bar_chart.pdf}
+        \caption{Mean Hausdorff Distance by Algorithm and Mesh Type. Lower is better. Error bars are 95\% CIs.}
+        \label{fig:hd_bar}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth,height=5.8cm,keepaspectratio]{figures/hd_dec_clean_cad.pdf}
+        \caption{Hausdorff Distance on Clean CAD Models. Note the dramatic error spike for QEM at 90\% decimation.}
+        \label{fig:hd_facet}
+    \end{subfigure}
+    \caption{Geometric Fidelity analysis. QEM is most accurate on organic meshes but degrades catastrophically on sparse CAD models at high decimation.}
+    \Description{Two charts side-by-side. Left: bar chart of Hausdorff Distance, QEM very low for Organic, higher for CAD; Clustering moderate for both. Right: bar chart focusing on CAD models showing QEM error spiking at 90 percent decimation, far exceeding Clustering.}
+    \label{fig:hd}
 \end{figure*}
 
 The ANOVA showed significant main effects for \textbf{Algorithm} ($p=0.008$), \textbf{Mesh Type} ($p=0.011$), and \textbf{Decimation Level} ($p=0.001$). More crucially, the \textbf{Interaction of Algorithm $\times$ Type} was significant ($p=0.004$).
@@ -40,14 +56,6 @@ The ANOVA showed significant main effects for \textbf{Algorithm} ($p=0.008$), \t
 As seen in Table \ref{tab:summary}, QEM performed exceptionally well on Organic models, achieving a very low mean Hausdorff Distance ($\approx 0.006$). This confirms its reputation for accuracy on general surfaces. However, it failed to preserve the geometry of CAD models, performing significantly worse than Clustering (Mean HD $\approx 0.034$) on this dataset.
 
 To understand this anomaly, we must look at the detailed breakdown by decimation level (Figure \ref{fig:hd_facet}). At the 50\% decimation level, QEM performs reasonably well. However, at \textbf{90\% decimation}, QEM on Clean CAD models exhibited a massive spike in error. Post-hoc Tukey HSD tests confirmed that the error for "QEM on CAD at 90\%" was significantly higher than all other groups ($p < 0.001$). In contrast, Vertex Clustering showed no significant degradation in error stability even at 90\% reduction. Its error remained consistently low, suggesting it is a "safer" fall-back for extreme reductions.
-
-\begin{figure*}[t]
-    \centering
-    \includegraphics[width=0.95\linewidth]{figures/hd_dec_clean_cad.pdf}
-    \caption{Hausdorff Distance on Clean CAD Models. Note the dramatic error spike for QEM at 90\% decimation.}
-    \Description{Bar chart focusing on CAD models. QEM error spikes massively at 90 percent decimation, far exceeding Clustering.}
-    \label{fig:hd_facet}
-\end{figure*}
 
 \begin{table}[h]
 \centering
